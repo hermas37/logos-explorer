@@ -1243,7 +1243,7 @@ export default function App() {
                     
                     {/* Mobile Friendly Dropdown Selector */}
                     <div className="block md:hidden w-full">
-                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1.5 font-semibold tracking-wider">NotebookLM Studio Option:</label>
+                      <label className="block text-xs font-mono text-neutral-400 uppercase mb-2 font-bold tracking-wider">STUDY SELECTOR:</label>
                       <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg`}>
                         <select
                           value={selectedAssetTab}
