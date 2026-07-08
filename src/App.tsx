@@ -1232,10 +1232,10 @@ export default function App() {
                   <button
                     onClick={() => setSelectedEpisode(null)}
                     id="back-to-hub-btn"
-                    className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-neutral-400 hover:text-indigo-300 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-bold text-sm md:text-base uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-amber-500/10 cursor-pointer duration-150"
                   >
-                    <ArrowLeft size={14} />
-                    Back to Episodes
+                    <ArrowLeft size={18} className="text-white stroke-[2.5px]" />
+                    BACK TO EPISODES
                   </button>
 
                   <div className="flex flex-wrap items-center gap-4">
