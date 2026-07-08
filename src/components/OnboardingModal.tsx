@@ -105,13 +105,13 @@ export default function OnboardingModal({
             {[
               {
                 id: 'academic_en' as StudyProfile,
-                label: 'College Academic (EN)',
+                label: 'Academic (EN)',
                 desc: 'Deep scholarly prose, thermodynamic mathematics, and philosophical rigor.',
                 icon: <GraduationCap size={16} className="text-yellow-500" />
               },
               {
                 id: 'esl_en' as StudyProfile,
-                label: 'Accessible / ESL (EN)',
+                label: 'Simplified (EN)',
                 desc: 'Shorter sentences, clear explanations, and simplified vocabularies.',
                 icon: <HelpCircle size={16} className="text-indigo-400" />
               },
@@ -123,7 +123,7 @@ export default function OnboardingModal({
               },
               {
                 id: 'translated_id' as StudyProfile,
-                label: 'Indonesian (ID)',
+                label: 'Indonesian',
                 desc: 'Complete translations and localized theological alignment in Bahasa Indonesia.',
                 icon: <Globe size={16} className="text-emerald-400" />
               }

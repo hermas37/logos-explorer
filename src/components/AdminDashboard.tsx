@@ -23,7 +23,8 @@ import {
   Eye,
   Settings,
   X,
-  Palette
+  Palette,
+  Video
 } from 'lucide-react';
 import { Episode, StudyProfile, EpisodeSource, Quotation, CustomSection, BookReview, BookChapterRecommendation } from '../types';
 import { motion } from 'motion/react';
@@ -940,13 +941,13 @@ export default function AdminDashboard({
                           Logos-Explorer requires distinct, high-fidelity titles and summaries for each target user demographic.
                         </p>
                         
-                        {(['academic_en', 'esl_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((prof) => (
+                        {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((prof) => (
                           <div key={prof} className="p-4 rounded-xl border border-neutral-900 bg-[#060609] space-y-3">
                             <span className="text-[10px] font-mono uppercase text-indigo-400 font-bold">
-                              {prof === 'academic_en' && 'College Academic Profile (English)'}
-                              {prof === 'esl_en' && 'Accessible / ESL Profile (English)'}
+                              {prof === 'academic_en' && 'Academic Profile (English)'}
+                              {prof === 'esl_en' && 'Simplified Profile (English)'}
                               {prof === 'translated_es' && 'Español (Spanish Translation)'}
-                              {prof === 'translated_id' && 'Bahasa Indonesia (Indonesian Translation)'}
+                              {prof === 'translated_id' && 'Indonesian Translation'}
                             </span>
                             
                             <div className="space-y-1.5">
@@ -1010,7 +1011,7 @@ export default function AdminDashboard({
                         {/* Profiles Override Links */}
                         <div className="space-y-3 pt-3 border-t border-neutral-900">
                           <h5 className="text-[10px] font-mono text-neutral-400 uppercase">Demographic Audio Overrides</h5>
-                          {(['academic_en', 'esl_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((p) => (
+                          {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((p) => (
                             <div key={p} className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                               <input
                                 type="text"
@@ -1028,6 +1029,101 @@ export default function AdminDashboard({
                               />
                             </div>
                           ))}
+                        </div>
+                      </div>
+
+                      {/* Short Video Overview Section */}
+                      <div className="bg-[#060609] border border-neutral-900 p-4 rounded-xl space-y-4">
+                        <div className="flex items-center gap-2">
+                          <Video size={16} className="text-indigo-400" />
+                          <h4 className="font-serif text-sm font-semibold text-neutral-200">NotebookLM Short Video Overview</h4>
+                        </div>
+                        <p className="text-[10px] text-neutral-500 leading-relaxed font-mono">
+                          Specify URL coordinates for the short video overview (e.g., .mp4 hosted on Vercel Blob) and optionally define titles/descriptions for each study profile.
+                        </p>
+
+                        <div className="space-y-4">
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-mono text-neutral-400 uppercase">Video Asset URL</label>
+                            <input
+                              type="text"
+                              placeholder="https://xxx.public.blob.vercel-storage.com/short_video.mp4"
+                              value={activeEpisode.short_video_overview?.video_url || ''}
+                              onChange={(e) => {
+                                const updated = { ...activeEpisode };
+                                if (!updated.short_video_overview) {
+                                  updated.short_video_overview = { video_url: '' };
+                                }
+                                updated.short_video_overview.video_url = e.target.value;
+                                saveToState(updated);
+                              }}
+                              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-xs text-neutral-200 font-mono focus:outline-none focus:border-indigo-500"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <label className="text-[9px] font-mono text-neutral-500 uppercase block border-b border-neutral-900 pb-1">Localized Titles</label>
+                              {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((p) => (
+                                <div key={p} className="flex gap-2 items-center text-xs">
+                                  <span className="w-24 text-[9px] font-mono text-neutral-500 shrink-0 uppercase">
+                                    {p === 'academic_en' && 'Acad EN:'}
+                                    {p === 'esl_en' && 'Simp EN:'}
+                                    {p === 'translated_es' && 'Español:'}
+                                    {p === 'translated_id' && 'Indo ID:'}
+                                  </span>
+                                  <input
+                                    type="text"
+                                    value={activeEpisode.short_video_overview?.title?.[p] || ''}
+                                    onChange={(e) => {
+                                      const updated = { ...activeEpisode };
+                                      if (!updated.short_video_overview) {
+                                        updated.short_video_overview = { video_url: '' };
+                                      }
+                                      updated.short_video_overview.title = {
+                                        ...updated.short_video_overview.title,
+                                        [p]: e.target.value
+                                      };
+                                      saveToState(updated);
+                                    }}
+                                    placeholder="Title..."
+                                    className="w-full bg-neutral-950 border border-neutral-900 rounded px-2 py-1 text-xs text-neutral-200 focus:outline-none focus:border-indigo-500"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="space-y-2">
+                              <label className="text-[9px] font-mono text-neutral-500 uppercase block border-b border-neutral-900 pb-1">Localized Descriptions</label>
+                              {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((p) => (
+                                <div key={p} className="flex gap-2 items-center text-xs">
+                                  <span className="w-24 text-[9px] font-mono text-neutral-500 shrink-0 uppercase">
+                                    {p === 'academic_en' && 'Acad EN:'}
+                                    {p === 'esl_en' && 'Simp EN:'}
+                                    {p === 'translated_es' && 'Español:'}
+                                    {p === 'translated_id' && 'Indo ID:'}
+                                  </span>
+                                  <input
+                                    type="text"
+                                    value={activeEpisode.short_video_overview?.description?.[p] || ''}
+                                    onChange={(e) => {
+                                      const updated = { ...activeEpisode };
+                                      if (!updated.short_video_overview) {
+                                        updated.short_video_overview = { video_url: '' };
+                                      }
+                                      updated.short_video_overview.description = {
+                                        ...updated.short_video_overview.description,
+                                        [p]: e.target.value
+                                      };
+                                      saveToState(updated);
+                                    }}
+                                    placeholder="Description..."
+                                    className="w-full bg-neutral-950 border border-neutral-900 rounded px-2 py-1 text-xs text-neutral-200 focus:outline-none focus:border-indigo-500"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       </div>
 
@@ -1385,7 +1481,7 @@ export default function AdminDashboard({
                         <div className="flex flex-wrap gap-2 pt-1.5">
                           <button
                             onClick={() => {
-                              const header = "Row Identifier\tField or Index\tCollege Academic (EN)\tAccessible / ESL (EN)\tEspañol (ES)\tIndonesian (ID)\n";
+                              const header = "Row Identifier\tField or Index\tAcademic (EN)\tSimplified (EN)\tEspañol (ES)\tIndonesian\n";
                               const rows = [
                                 "EPISODE_META\tid\t01\t\t\t",
                                 "EPISODE_META\tpublish_date\t2026-06-25\t\t\t",
@@ -1431,7 +1527,7 @@ export default function AdminDashboard({
 
                           <button
                             onClick={() => {
-                              const sampleText = `Row Identifier\tField or Index\tCollege Academic (EN)\tAccessible / ESL (EN)\tEspañol (ES)\tIndonesian (ID)
+                              const sampleText = `Row Identifier\tField or Index\tAcademic (EN)\tSimplified (EN)\tEspañol (ES)\tIndonesian
 EPISODE_META\tid\t01
 EPISODE_META\tpublish_date\t2026-06-25
 EPISODE_META\tyoutube_video_id\tU2q0L6K77-w
@@ -1491,7 +1587,7 @@ Transform the single-source theological or scientific narrative story into a str
 Your output MUST be a single clean markdown block containing only TSV rows separated by tab characters (\\t). Do not write introductory or explanatory text. Follow this schema exactly:
 
 Columns:
-Row Identifier\\tField or Index\\tCollege Academic (EN)\\tAccessible / ESL (EN)\\tEspañol (ES)\\tIndonesian (ID)
+Row Identifier\\tField or Index\\tAcademic (EN)\\tSimplified (EN)\\tEspañol (ES)\\tIndonesian
 
 The row definitions to produce:
 EPISODE_META\\tid\\t[Episode ID (e.g. 02)]
@@ -1554,7 +1650,7 @@ Here is the raw story text to parse:
                           value={tsvPasteText}
                           onChange={(e) => setTsvPasteText(e.target.value)}
                           rows={12}
-                          placeholder="Row Identifier	Field or Index	College Academic (EN)	Accessible / ESL (EN)	Español (ES)	Indonesian (ID)..."
+                          placeholder="Row Identifier	Field or Index	Academic (EN)	Simplified (EN)	Español (ES)	Indonesian..."
                           className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-xs text-neutral-200 font-mono focus:outline-none focus:border-indigo-500 placeholder:text-neutral-700"
                         />
                       </div>

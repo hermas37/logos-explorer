@@ -111,6 +111,10 @@ export interface EpisodeSource {
   title: string;
   description: string;
   url: string;
+  author?: string;
+  year?: string;
+  citation?: string;
+  type?: string;
 }
 
 export interface CustomSection {
@@ -173,4 +177,9 @@ export interface Episode {
   inspiring_quotations: Quotation[];
   study_modules: StudyModules;
   sources?: EpisodeSource[];
+  short_video_overview?: {
+    video_url: string;
+    title?: ProfileMappedString;
+    description?: ProfileMappedString;
+  };
 }

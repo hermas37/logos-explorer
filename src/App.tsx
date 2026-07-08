@@ -27,12 +27,17 @@ import {
   Link2,
   Sun,
   Moon,
-  HelpCircle
+  HelpCircle,
+  Printer,
+  Video
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Import Types
 import { Episode, StudyProfile, MindMapNode, SlideDeck, InfographicData, SpecializedReportData, DataTableData } from './types';
+
+// Import PDF Generator Utility
+import { printEpisodePDF } from './utils/pdfGenerator';
 
 // Import Custom Modular Components
 import Timeline from './components/Timeline';
@@ -168,7 +173,7 @@ export default function App() {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [activeTab, setActiveTab] = useState<'hub' | 'about' | 'admin'>('hub');
-  const [activeProfile, setActiveProfile] = useState<StudyProfile>('academic_en');
+  const [activeProfile, setActiveProfile] = useState<StudyProfile>('esl_en');
   const [searchQuery, setSearchQuery] = useState('');
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [selectedAssetTab, setSelectedAssetTab] = useState<string>('');
@@ -506,6 +511,9 @@ export default function App() {
   // Helper to dynamically collect available study asset modules from dataset
   const getDynamicTabs = (episode: Episode) => {
     const tabs: { id: string; label: string }[] = [];
+    if (episode.short_video_overview) {
+      tabs.push({ id: 'short_video_overview', label: 'Short Video Overview' });
+    }
     if (episode.study_modules?.executive_summary) {
       tabs.push({ id: 'executive_summary', label: 'Executive Summary' });
     }
@@ -549,10 +557,10 @@ export default function App() {
 
   const getProfileLabel = (profile: StudyProfile) => {
     switch (profile) {
-      case 'academic_en': return 'College Academic (EN)';
-      case 'esl_en': return 'Accessible / ESL (EN)';
+      case 'academic_en': return 'Academic (EN)';
+      case 'esl_en': return 'Simplified (EN)';
       case 'translated_es': return 'Español';
-      case 'translated_id': return 'Indonesian (Bahasa Indonesia)';
+      case 'translated_id': return 'Indonesian';
     }
   };
 
@@ -793,7 +801,7 @@ export default function App() {
             {/* Profile pill group */}
             <div className={`flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
               <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase px-2 font-bold select-none whitespace-nowrap`}>Study Profile:</span>
-              {(['academic_en', 'esl_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
+              {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
                 <button
                   key={profile}
                   onClick={() => setActiveProfile(profile)}
@@ -893,7 +901,7 @@ export default function App() {
                     <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
                       <Cpu size={16} />
                     </div>
-                    <h4 className="font-serif text-base text-neutral-200">College Academic (EN)</h4>
+                    <h4 className="font-serif text-base text-neutral-200">Academic (EN)</h4>
                     <p className="font-sans text-xs text-neutral-400 leading-relaxed">
                       Includes advanced scientific metrics, Roger Penrose's phase volume parameters, and cosmological constants fine-tuning equations mapped to historical philosophical contexts.
                     </p>
@@ -903,7 +911,7 @@ export default function App() {
                     <div className="w-8 h-8 rounded-lg bg-emerald-950/30 flex items-center justify-center text-emerald-400 border border-emerald-900/40">
                       <Languages size={16} />
                     </div>
-                    <h4 className="font-serif text-base text-neutral-200">Accessible / ESL (EN)</h4>
+                    <h4 className="font-serif text-base text-neutral-200">Simplified (EN)</h4>
                     <p className="font-sans text-xs text-neutral-400 leading-relaxed">
                       Written with clear, simplified vocabulary, short paragraphs, and supportive definitions designed for English as a Second Language learners and general study reviews.
                     </p>
@@ -1081,31 +1089,67 @@ export default function App() {
 
                 {/* 2. Interactive Asset Tab Section (Dynamically generated tabs) */}
                 <div className="space-y-6">
-                  {/* Dynamic Tab Picker */}
-                  <div className="border-b border-neutral-800 flex items-center overflow-x-auto custom-scrollbar gap-1.5 pb-px">
-                    {getDynamicTabs(selectedEpisode).map((tab) => (
+                  {/* Dynamic Tab Picker & Export Action Bar */}
+                  <div className="border-b border-neutral-800 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-1">
+                    <div className="flex items-center overflow-x-auto custom-scrollbar gap-1.5 pb-px flex-grow max-w-full">
+                      {getDynamicTabs(selectedEpisode).map((tab) => (
+                        <button
+                          key={tab.id}
+                          id={`asset-tab-${tab.id}`}
+                          onClick={() => setSelectedAssetTab(tab.id)}
+                          className={`px-4 py-3 rounded-t-xl text-xs font-medium whitespace-nowrap transition-all border-b-2 -mb-[5px] flex items-center gap-1.5 ${
+                            selectedAssetTab === tab.id
+                              ? `${tColors.selectActiveBorder} ${tColors.accentText} ${tColors.selectTabBg} font-semibold`
+                              : 'border-transparent text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/20'
+                          }`}
+                        >
+                          {tab.id === 'short_video_overview' && <Video size={12} className={tColors.iconColor} />}
+                          {tab.id === 'executive_summary' && <FileText size={12} className={tColors.iconColor} />}
+                          {tab.id === 'timeline' && <Play size={12} className={`fill-current/10 ${tColors.iconColor}`} />}
+                          {tab.id === 'quotes' && <Quote size={12} className={tColors.iconColor} />}
+                          {tab.id === 'mind_map' && <Cpu size={12} className={tColors.iconColor} />}
+                          {tab.id === 'infographic' && <Sparkles size={12} className={tColors.iconColor} />}
+                          {tab.id === 'book_review' && <BookOpen size={12} className={tColors.iconColor} />}
+                          {tab.id === 'inspiring_story' && <Flame size={12} className={tColors.iconColor} />}
+                          {tab.id === 'sources' && <Bookmark size={12} className={tColors.iconColor} />}
+                          {tab.id.startsWith('custom_') && <Award size={12} className={tColors.iconColor} />}
+                          <span>{tab.label}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* PDF / Printable Export Suite */}
+                    <div className="flex items-center gap-2 self-end lg:self-center shrink-0 mb-1 lg:mb-0">
+                      {/* Active Printable Section Trigger (Executive Summary or Book Review) */}
+                      {(selectedAssetTab === 'executive_summary' || selectedAssetTab === 'book_review') && (
+                        <button
+                          onClick={() => {
+                            if (selectedAssetTab === 'executive_summary' || selectedAssetTab === 'book_review') {
+                              printEpisodePDF(selectedEpisode, activeProfile, selectedAssetTab);
+                            }
+                          }}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono transition-all duration-200 cursor-pointer ${
+                            isBright
+                              ? 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100 shadow-sm'
+                              : 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:bg-neutral-850'
+                          }`}
+                          title={`Print currently selected ${selectedAssetTab === 'executive_summary' ? 'Executive Summary' : 'Book Review'}`}
+                        >
+                          <Printer size={13} className={tColors.iconColor} />
+                          <span>Print Section (PDF)</span>
+                        </button>
+                      )}
+
+                      {/* Complete Study Companion Trigger */}
                       <button
-                        key={tab.id}
-                        id={`asset-tab-${tab.id}`}
-                        onClick={() => setSelectedAssetTab(tab.id)}
-                        className={`px-4 py-3 rounded-t-xl text-xs font-medium whitespace-nowrap transition-all border-b-2 -mb-px flex items-center gap-1.5 ${
-                          selectedAssetTab === tab.id
-                            ? `${tColors.selectActiveBorder} ${tColors.accentText} ${tColors.selectTabBg} font-semibold`
-                            : 'border-transparent text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/20'
-                        }`}
+                        onClick={() => printEpisodePDF(selectedEpisode, activeProfile, 'all')}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono font-medium text-white shadow-md transition-all duration-200 cursor-pointer ${tColors.accentBg} ${tColors.accentBgHover} ${tColors.accentGlow}`}
+                        title="Print entire episode text materials (Executive Summary, Book Review, Quotations, and Reports) in a unified study guide PDF"
                       >
-                        {tab.id === 'executive_summary' && <FileText size={12} className={tColors.iconColor} />}
-                        {tab.id === 'timeline' && <Play size={12} className={`fill-current/10 ${tColors.iconColor}`} />}
-                        {tab.id === 'quotes' && <Quote size={12} className={tColors.iconColor} />}
-                        {tab.id === 'mind_map' && <Cpu size={12} className={tColors.iconColor} />}
-                        {tab.id === 'infographic' && <Sparkles size={12} className={tColors.iconColor} />}
-                        {tab.id === 'book_review' && <BookOpen size={12} className={tColors.iconColor} />}
-                        {tab.id === 'inspiring_story' && <Flame size={12} className={tColors.iconColor} />}
-                        {tab.id === 'sources' && <Bookmark size={12} className={tColors.iconColor} />}
-                        {tab.id.startsWith('custom_') && <Award size={12} className={tColors.iconColor} />}
-                        <span>{tab.label}</span>
+                        <Printer size={13} className="text-white" />
+                        <span>Print Full Companion (PDF)</span>
                       </button>
-                    ))}
+                    </div>
                   </div>
 
                   {/* Active tab content container with motion animation transition */}
@@ -1118,6 +1162,41 @@ export default function App() {
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.2 }}
                       >
+                        {selectedAssetTab === 'short_video_overview' && selectedEpisode.short_video_overview && (
+                          <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-neutral-800 bg-gradient-to-tr from-neutral-950 via-[#0a0812] to-neutral-950">
+                            <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
+                              <div className="w-10 h-10 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400">
+                                <Video size={20} className="animate-pulse" />
+                              </div>
+                              <div>
+                                <h3 className="font-serif text-lg text-neutral-200">
+                                  {selectedEpisode.short_video_overview.title?.[activeProfile] || 
+                                   selectedEpisode.short_video_overview.title?.['academic_en'] || 
+                                   'NotebookLM Short Video Overview'}
+                                </h3>
+                                <p className="text-[10px] font-mono text-neutral-500 uppercase">Interactive Studio Media Brief</p>
+                              </div>
+                            </div>
+                            
+                            <div className="relative aspect-video rounded-xl overflow-hidden bg-black border border-neutral-800 shadow-2xl">
+                              <video 
+                                src={selectedEpisode.short_video_overview.video_url} 
+                                controls 
+                                className="w-full h-full object-contain"
+                                preload="metadata"
+                                playsInline
+                              />
+                            </div>
+
+                            {selectedEpisode.short_video_overview.description && (
+                              <p className="text-sm text-neutral-300 leading-relaxed italic border-l border-indigo-900/50 pl-4">
+                                {selectedEpisode.short_video_overview.description[activeProfile] || 
+                                 selectedEpisode.short_video_overview.description['academic_en']}
+                              </p>
+                            )}
+                          </div>
+                        )}
+
                         {selectedAssetTab === 'executive_summary' && selectedEpisode.study_modules.executive_summary && (
                           <ExecutiveSummary 
                             summaryData={selectedEpisode.study_modules.executive_summary} 
