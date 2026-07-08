@@ -1050,11 +1050,11 @@ export default function App() {
                     },
                     {
                       title: "Español (ES)",
-                      desc: "A rigorous and integrated translation for the entire Spanish-speaking community, preserving the theological depth and scientific precision."
+                      desc: "Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica de los episodios originales."
                     },
                     {
                       title: "Indonesian (ID)",
-                      desc: "A beautiful translation and localized theological alignments in simple, clear Bahasa Indonesia for everyday learning."
+                      desc: "Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami untuk pembelajaran sehari-hari."
                     }
                   ]
                 },
@@ -1080,11 +1080,11 @@ export default function App() {
                     },
                     {
                       title: "Español (ES)",
-                      desc: "A rigorous and integrated translation for the entire Spanish-speaking community, preserving the theological depth and scientific precision."
+                      desc: "Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica de los episodios originales."
                     },
                     {
                       title: "Indonesian (ID)",
-                      desc: "A beautiful translation and localized theological alignments in simple, clear Bahasa Indonesia for everyday learning."
+                      desc: "Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami untuk pembelajaran sehari-hari."
                     }
                   ]
                 },
@@ -1101,20 +1101,20 @@ export default function App() {
                   offlineBadge: "Instalado y Listo sin Conexión",
                   cards: [
                     {
-                      title: "Académico (EN)",
+                      title: "Academic (EN)",
                       desc: "Incluye métricas científicas avanzadas, los parámetros de volumen de fase de Roger Penrose y ecuaciones de ajuste fino cosmológico integradas a contextos filosóficos históricos."
                     },
                     {
-                      title: "Simplificado (EN)",
+                      title: "Simplified (EN)",
                       desc: "Escrito con un vocabulario claro y simplificado, párrafos cortos y definiciones de apoyo diseñadas para estudiantes de inglés como segundo idioma y repasos generales de estudio."
                     },
                     {
                       title: "Español (ES)",
-                      desc: "Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica."
+                      desc: "Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica de los episodios originales."
                     },
                     {
-                      title: "Indonesio (ID)",
-                      desc: "Una hermosa traducción y alineaciones teológicas localizadas en un indonesio simple y claro para el aprendizaje diario."
+                      title: "Indonesian (ID)",
+                      desc: "Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami untuk pembelajaran sehari-hari."
                     }
                   ]
                 },
@@ -1131,19 +1131,19 @@ export default function App() {
                   offlineBadge: "Tersimpan & Siap Offline",
                   cards: [
                     {
-                      title: "Akademis (EN)",
+                      title: "Academic (EN)",
                       desc: "Menyediakan metrik sains mendalam, parameter volume fase Roger Penrose, dan persamaan penyetelan halus konstanta kosmologi yang dipetakan ke konteks filosofis historis."
                     },
                     {
-                      title: "Bahasa Inggris Sederhana (EN)",
+                      title: "Simplified (EN)",
                       desc: "Ditulis dengan tata bahasa Inggris yang sederhana, paragraf pendek, dan penjelasan kosakata pendukung untuk pembelajaran umum."
                     },
                     {
-                      title: "Spanyol (ES)",
-                      desc: "Terjemahan bahasa Spanyol yang lengkap dan mendalam untuk komunitas Hispanik, mempertahankan kedalaman teologis dan akurasi ilmiah."
+                      title: "Español (ES)",
+                      desc: "Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica de los episodios originales."
                     },
                     {
-                      title: "Bahasa Indonesia (ID)",
+                      title: "Indonesian (ID)",
                       desc: "Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami untuk pembelajaran sehari-hari."
                     }
                   ]
