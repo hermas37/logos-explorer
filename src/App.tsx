@@ -1038,7 +1038,25 @@ export default function App() {
                   ),
                   offlineTitle: "Offline-First PWA Technology",
                   offlineDesc: "This application incorporates a PWA Cache service worker. Once you open an episode, all of its accompanying study slides, specialized reports, and data parameters are stored directly on your phone or laptop. Study anywhere—even in remote retreats with zero internet connectivity.",
-                  offlineBadge: "Installed & Offline Ready"
+                  offlineBadge: "Installed & Offline Ready",
+                  cards: [
+                    {
+                      title: "Academic (EN)",
+                      desc: "Includes advanced scientific metrics, Roger Penrose's phase volume parameters, and cosmological constants fine-tuning equations mapped to historical philosophical contexts."
+                    },
+                    {
+                      title: "Simplified (EN)",
+                      desc: "Written with clear, simplified vocabulary, short paragraphs, and supportive definitions designed for English as a Second Language learners and general study reviews."
+                    },
+                    {
+                      title: "Español (ES)",
+                      desc: "A rigorous and integrated translation for the entire Spanish-speaking community, preserving the theological depth and scientific precision."
+                    },
+                    {
+                      title: "Indonesian (ID)",
+                      desc: "A beautiful translation and localized theological alignments in simple, clear Bahasa Indonesia for everyday learning."
+                    }
+                  ]
                 },
                 esl_en: {
                   manifest: "App Guide & Main Ideas",
@@ -1050,7 +1068,25 @@ export default function App() {
                   ),
                   offlineTitle: "Works Without Internet (Offline)",
                   offlineDesc: "This website saves everything directly to your phone or computer. Once you open a lesson, you can read the slides, summaries, and reports even when you have no internet. You can study anywhere at any time.",
-                  offlineBadge: "Saved & Ready Offline"
+                  offlineBadge: "Saved & Ready Offline",
+                  cards: [
+                    {
+                      title: "Academic (EN)",
+                      desc: "Includes advanced scientific metrics, Roger Penrose's phase volume parameters, and cosmological constants fine-tuning equations mapped to historical philosophical contexts."
+                    },
+                    {
+                      title: "Simplified (EN)",
+                      desc: "Written with clear, simplified vocabulary, short paragraphs, and supportive definitions designed for English as a Second Language learners and general study reviews."
+                    },
+                    {
+                      title: "Español (ES)",
+                      desc: "A rigorous and integrated translation for the entire Spanish-speaking community, preserving the theological depth and scientific precision."
+                    },
+                    {
+                      title: "Indonesian (ID)",
+                      desc: "A beautiful translation and localized theological alignments in simple, clear Bahasa Indonesia for everyday learning."
+                    }
+                  ]
                 },
                 translated_es: {
                   manifest: "Manifiesto de la Aplicación y Filosofía",
@@ -1062,7 +1098,25 @@ export default function App() {
                   ),
                   offlineTitle: "Tecnología PWA sin Conexión Primero",
                   offlineDesc: "Esta aplicación incorpora un servicio de almacenamiento en caché PWA. Una vez que abres un episodio, todas las diapositivas de estudio, informes especializados y parámetros de datos que lo acompañan se guardan directamente en tu teléfono o computadora portátil. Estudia en cualquier lugar, incluso en retiros remotos sin conexión a internet.",
-                  offlineBadge: "Instalado y Listo sin Conexión"
+                  offlineBadge: "Instalado y Listo sin Conexión",
+                  cards: [
+                    {
+                      title: "Académico (EN)",
+                      desc: "Incluye métricas científicas avanzadas, los parámetros de volumen de fase de Roger Penrose y ecuaciones de ajuste fino cosmológico integradas a contextos filosóficos históricos."
+                    },
+                    {
+                      title: "Simplificado (EN)",
+                      desc: "Escrito con un vocabulario claro y simplificado, párrafos cortos y definiciones de apoyo diseñadas para estudiantes de inglés como segundo idioma y repasos generales de estudio."
+                    },
+                    {
+                      title: "Español (ES)",
+                      desc: "Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica."
+                    },
+                    {
+                      title: "Indonesio (ID)",
+                      desc: "Una hermosa traducción y alineaciones teológicas localizadas en un indonesio simple y claro para el aprendizaje diario."
+                    }
+                  ]
                 },
                 translated_id: {
                   manifest: "Manifes & Etos Aplikasi",
@@ -1074,7 +1128,25 @@ export default function App() {
                   ),
                   offlineTitle: "Teknologi PWA Berbasis Offline-First",
                   offlineDesc: "Aplikasi ini menggunakan teknologi cache PWA yang canggih. Setelah Anda membuka suatu episode, semua slide studi, laporan khusus, dan parameter data akan disimpan langsung di ponsel atau laptop Anda. Belajar di mana saja—bahkan di tempat yang tidak ada sinyal internet sama sekali.",
-                  offlineBadge: "Tersimpan & Siap Offline"
+                  offlineBadge: "Tersimpan & Siap Offline",
+                  cards: [
+                    {
+                      title: "Akademis (EN)",
+                      desc: "Menyediakan metrik sains mendalam, parameter volume fase Roger Penrose, dan persamaan penyetelan halus konstanta kosmologi yang dipetakan ke konteks filosofis historis."
+                    },
+                    {
+                      title: "Bahasa Inggris Sederhana (EN)",
+                      desc: "Ditulis dengan tata bahasa Inggris yang sederhana, paragraf pendek, dan penjelasan kosakata pendukung untuk pembelajaran umum."
+                    },
+                    {
+                      title: "Spanyol (ES)",
+                      desc: "Terjemahan bahasa Spanyol yang lengkap dan mendalam untuk komunitas Hispanik, mempertahankan kedalaman teologis dan akurasi ilmiah."
+                    },
+                    {
+                      title: "Bahasa Indonesia (ID)",
+                      desc: "Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami untuk pembelajaran sehari-hari."
+                    }
+                  ]
                 }
               };
 
@@ -1106,53 +1178,31 @@ export default function App() {
 
                   {/* Grid describing study profiles */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="glass-card p-6 rounded-xl space-y-3">
-                      <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
-                        <Cpu size={16} />
-                      </div>
-                      <h4 className="font-serif text-base text-neutral-200">Academic (EN)</h4>
-                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                        {activeProfile === 'translated_id' 
-                          ? 'Menyediakan metrik sains mendalam, parameter volume fase Roger Penrose, dan persamaan kosmologi presisi tinggi.'
-                          : "Includes advanced scientific metrics, Roger Penrose's phase volume parameters, and cosmological constants fine-tuning equations mapped to historical philosophical contexts."}
-                      </p>
-                    </div>
-
-                    <div className="glass-card p-6 rounded-xl space-y-3">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-950/30 flex items-center justify-center text-emerald-400 border border-emerald-900/40">
-                        <Languages size={16} />
-                      </div>
-                      <h4 className="font-serif text-base text-neutral-200">Simplified (EN)</h4>
-                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                        {activeProfile === 'translated_id'
-                          ? 'Ditulis dengan tata bahasa yang sederhana, paragraf pendek, dan penjelasan kosakata pendukung untuk pembelajaran umum.'
-                          : 'Written with clear, simplified vocabulary, short paragraphs, and supportive definitions designed for English as a Second Language learners and general study reviews.'}
-                      </p>
-                    </div>
-
-                    <div className="glass-card p-6 rounded-xl space-y-3">
-                      <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
-                        <Globe size={16} />
-                      </div>
-                      <h4 className="font-serif text-base text-neutral-200">Español (ES)</h4>
-                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                        {activeProfile === 'translated_id'
-                          ? 'Terjemahan bahasa Spanyol yang lengkap untuk komunitas Hispanik, mempertahankan kedalaman teologi sains yang akurat.'
-                          : 'Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica.'}
-                      </p>
-                    </div>
-
-                    <div className="glass-card p-6 rounded-xl space-y-3">
-                      <div className="w-8 h-8 rounded-lg bg-amber-950/40 flex items-center justify-center text-amber-400 border border-amber-900/40">
-                        <Globe size={16} />
-                      </div>
-                      <h4 className="font-serif text-base text-neutral-200">Indonesia (ID)</h4>
-                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                        {activeProfile === 'translated_id'
-                          ? 'Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami.'
-                          : 'A beautiful translation and localized theological alignments in simple, clear Bahasa Indonesia for everyday learning.'}
-                      </p>
-                    </div>
+                    {t.cards.map((card, idx) => {
+                      const icons = [
+                        <Cpu size={16} key="cpu" />,
+                        <Languages size={16} key="languages" />,
+                        <Globe size={16} key="globe-es" />,
+                        <Globe size={16} key="globe-id" />
+                      ];
+                      const bgs = [
+                        "bg-indigo-950 text-indigo-400 border-indigo-900/40",
+                        "bg-emerald-950/30 text-emerald-400 border-emerald-900/40",
+                        "bg-indigo-950 text-indigo-400 border-indigo-900/40",
+                        "bg-amber-950/40 text-amber-400 border-amber-900/40"
+                      ];
+                      return (
+                        <div key={idx} className="glass-card p-6 rounded-xl space-y-3">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center border ${bgs[idx]}`}>
+                            {icons[idx]}
+                          </div>
+                          <h4 className="font-serif text-base text-neutral-200">{card.title}</h4>
+                          <p className="font-sans text-xs text-neutral-400 leading-relaxed">
+                            {card.desc}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
 
                   {/* offline capability module */}
