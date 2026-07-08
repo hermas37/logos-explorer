@@ -928,71 +928,77 @@ export default function App() {
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-            {/* Profile Dropdown for Mobile */}
-            <div className={`sm:hidden flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1.5 rounded-xl self-stretch w-full`}>
-              <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase pl-1.5 font-bold select-none whitespace-nowrap tracking-wider`}>1. LANGUAGE SELECTOR</span>
-              <select
-                value={activeProfile}
-                onChange={(e) => setActiveProfile(e.target.value as StudyProfile)}
-                className={`flex-1 bg-transparent border-0 text-xs font-medium focus:ring-0 focus:outline-none cursor-pointer py-1 pr-6 ${
-                  isBright ? 'text-neutral-900' : 'text-neutral-100'
-                }`}
-              >
-                {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
-                  <option 
-                    key={profile} 
-                    value={profile}
-                    className={isBright ? 'bg-white text-neutral-900' : 'bg-neutral-950 text-neutral-100'}
-                  >
-                    {getProfileLabel(profile)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Profile pill group for Desktop */}
-            <div className={`hidden sm:flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
-              <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase px-2 font-bold select-none whitespace-nowrap tracking-wider`}>1. LANGUAGE SELECTOR</span>
-              {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
-                <button
-                  key={profile}
-                  onClick={() => setActiveProfile(profile)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 ${
-                    activeProfile === profile
-                      ? tColors.activePillBg
-                      : isBright
-                        ? 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200/50'
-                        : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-950'
+          <div className="flex flex-col items-stretch sm:items-end gap-2.5 w-full sm:w-auto">
+            {/* Row 1: Language Selector */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              {/* Profile Dropdown for Mobile */}
+              <div className={`sm:hidden flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1.5 rounded-xl self-stretch w-full`}>
+                <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase pl-1.5 font-bold select-none whitespace-nowrap tracking-wider`}>1. LANGUAGE SELECTOR</span>
+                <select
+                  value={activeProfile}
+                  onChange={(e) => setActiveProfile(e.target.value as StudyProfile)}
+                  className={`flex-1 bg-transparent border-0 text-xs font-medium focus:ring-0 focus:outline-none cursor-pointer py-1 pr-6 ${
+                    isBright ? 'text-neutral-900' : 'text-neutral-100'
                   }`}
                 >
-                  {getProfileLabel(profile)}
-                </button>
-              ))}
+                  {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
+                    <option 
+                      key={profile} 
+                      value={profile}
+                      className={isBright ? 'bg-white text-neutral-900' : 'bg-neutral-950 text-neutral-100'}
+                    >
+                      {getProfileLabel(profile)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Profile pill group for Desktop */}
+              <div className={`hidden sm:flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
+                <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase px-2 font-bold select-none whitespace-nowrap tracking-wider`}>1. LANGUAGE SELECTOR</span>
+                {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
+                  <button
+                    key={profile}
+                    onClick={() => setActiveProfile(profile)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      activeProfile === profile
+                        ? tColors.activePillBg
+                        : isBright
+                          ? 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200/50'
+                          : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-950'
+                    }`}
+                  >
+                    {getProfileLabel(profile)}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Onboarding / Setup Guide Trigger */}
-            <button
-              onClick={() => setIsOnboardingOpen(true)}
-              className="flex items-center gap-2 text-sm md:text-base font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider cursor-pointer hover:opacity-85 transition-all"
-              title="Show Logos-Explorer User Guide"
-            >
-              <HelpCircle size={16} className="text-amber-500 dark:text-amber-400" />
-              <span>Logos-Explorer User Guide</span>
-            </button>
+            {/* Row 2: User Guide & Theme Toggle */}
+            <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto mt-0.5 px-1">
+              {/* Onboarding / Setup Guide Trigger */}
+              <button
+                onClick={() => setIsOnboardingOpen(true)}
+                className="flex items-center gap-2 text-sm md:text-base font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider cursor-pointer hover:opacity-85 transition-all"
+                title="Show Logos-Explorer User Guide"
+              >
+                <HelpCircle size={16} className="text-amber-500 dark:text-amber-400" />
+                <span>Logos-Explorer User Guide</span>
+              </button>
 
-            {/* Desktop theme mode toggle */}
-            <button
-              onClick={handleToggleBrightness}
-              className={`hidden sm:flex items-center justify-center p-2 rounded-xl border transition-all duration-200 cursor-pointer ${
-                isBright 
-                  ? 'bg-neutral-50 border-neutral-200 text-amber-600 hover:bg-neutral-100 shadow-sm' 
-                  : 'bg-neutral-900/80 border-neutral-800 text-indigo-400 hover:bg-neutral-800'
-              }`}
-              title="Toggle theme mode"
-            >
-              {isBright ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
+              {/* Desktop theme mode toggle */}
+              <button
+                onClick={handleToggleBrightness}
+                className={`hidden sm:flex items-center justify-center p-2 rounded-xl border transition-all duration-200 cursor-pointer ${
+                  isBright 
+                    ? 'bg-neutral-50 border-neutral-200 text-amber-600 hover:bg-neutral-100 shadow-sm' 
+                    : 'bg-neutral-900/80 border-neutral-800 text-indigo-400 hover:bg-neutral-800'
+                }`}
+                title="Toggle theme mode"
+              >
+                {isBright ? <Sun size={15} /> : <Moon size={15} />}
+              </button>
+            </div>
           </div>
         </header>
 
