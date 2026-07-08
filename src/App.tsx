@@ -974,15 +974,11 @@ export default function App() {
             {/* Onboarding / Setup Guide Trigger */}
             <button
               onClick={() => setIsOnboardingOpen(true)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-medium transition-all duration-200 cursor-pointer ${
-                isBright 
-                  ? 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100 shadow-sm' 
-                  : 'bg-neutral-900/80 border-neutral-800 text-neutral-300 hover:bg-neutral-800'
-              }`}
-              title="Show Workspace Guide"
+              className="flex items-center gap-2 text-sm md:text-base font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider cursor-pointer hover:opacity-85 transition-all"
+              title="Show Logos-Explorer User Guide"
             >
-              <HelpCircle size={15} className="text-yellow-500" />
-              <span className="hidden md:inline">Workspace Guide</span>
+              <HelpCircle size={16} className="text-amber-500 dark:text-amber-400" />
+              <span>Logos-Explorer User Guide</span>
             </button>
 
             {/* Desktop theme mode toggle */}
@@ -1153,35 +1149,6 @@ export default function App() {
                         })}
                       </select>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    {episodes.map((episode) => {
-                      const title = episode.title[activeProfile] || episode.title['academic_en'];
-                      return (
-                        <button
-                          key={episode.id}
-                          onClick={() => setSelectedEpisode(episode)}
-                          className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between gap-3 group cursor-pointer ${
-                            isBright
-                              ? 'bg-neutral-50 border-neutral-200 hover:border-neutral-300 hover:bg-neutral-100 shadow-sm'
-                              : 'bg-[#060609]/60 border-neutral-900 hover:border-neutral-800 hover:bg-neutral-900/30'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3 overflow-hidden">
-                            <span className={`font-mono text-xs font-bold px-2.5 py-1 rounded shrink-0 ${
-                              isBright ? 'bg-neutral-100 text-neutral-600' : 'bg-neutral-900 text-neutral-400'
-                            }`}>
-                              EP {episode.id}
-                            </span>
-                            <span className="font-serif text-xs md:text-sm text-neutral-200 group-hover:text-indigo-400 transition-colors truncate">
-                              {title}
-                            </span>
-                          </div>
-                          <ChevronRight size={14} className="text-neutral-600 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all shrink-0" />
-                        </button>
-                      );
-                    })}
                   </div>
                 </div>
 

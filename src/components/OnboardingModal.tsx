@@ -40,7 +40,7 @@ export default function OnboardingModal({
 
   if (!isOpen) return null;
 
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   const handleNext = () => {
     if (step < totalSteps - 1) {
@@ -68,37 +68,35 @@ export default function OnboardingModal({
   const stepsData = [
     {
       title: "Welcome to Logos-Explorer",
-      subtitle: "A High-Fidelity Study & Exploration Workspace",
+      subtitle: "The Logos-Transmission Study Companion",
       icon: <Compass className="w-12 h-12 text-yellow-500 animate-spin-slow" />,
       content: (
         <div className="space-y-4">
           <p className={`text-sm leading-relaxed ${isBright ? 'text-neutral-600' : 'text-neutral-300'}`}>
-            Welcome to the ultimate multimedia companion for the <span className="font-semibold text-yellow-500">Logos-Transmission</span> series. 
-            This workspace bridges scientific formulations with teleological metaphysics, helping you explore whether the cosmos is a byproduct of random chance or intentional orchestration.
+            Explore the intersection of scientific formulations and teleological metaphysics. This workspace is your interactive study system designed to help you analyze each transmission with depth and clarity.
           </p>
           <div className={`p-4 rounded-xl border ${isBright ? 'bg-neutral-50 border-neutral-200 text-neutral-700' : 'bg-neutral-950/60 border-neutral-800 text-neutral-300'} text-xs space-y-2`}>
             <div className="flex items-center gap-2 font-semibold text-yellow-500">
               <Sparkles size={14} />
-              <span>What is in this workspace?</span>
+              <span>Core Features:</span>
             </div>
-            <ul className="list-disc list-inside space-y-1 text-left">
-              <li>Interactive Timelines with synchronized quotes & notes.</li>
-              <li>Dynamic Mind Maps charting concepts.</li>
-              <li>Multi-demographic Slides, Book Reviews, and specialized reports.</li>
-              <li>A high-fidelity Audio Player with adaptive playback speed.</li>
+            <ul className="list-disc list-inside space-y-1 text-left pl-1">
+              <li>Interactive timelines, slides, and specialized reports.</li>
+              <li>Dual dynamic Mind Maps charting key theological concepts.</li>
+              <li>A high-fidelity Audio Player with adaptive playback controls.</li>
             </ul>
           </div>
         </div>
       )
     },
     {
-      title: "Tailored Language Options",
-      subtitle: "Four custom perspectives for different learning styles",
+      title: "Choose Your Perspective",
+      subtitle: "Four custom language and study demographics",
       icon: <Languages className="w-12 h-12 text-indigo-400" />,
       content: (
         <div className="space-y-4">
           <p className={`text-sm leading-relaxed ${isBright ? 'text-neutral-600' : 'text-neutral-300'}`}>
-            Every episode contains content fully customized across four separate demographics. Select a language to adjust all vocabularies, slide decks, summaries, and analyses instantly:
+            Select a profile to instantly adjust all vocabularies, slide decks, summaries, and theological alignments:
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -106,25 +104,25 @@ export default function OnboardingModal({
               {
                 id: 'academic_en' as StudyProfile,
                 label: 'Academic (EN)',
-                desc: 'Deep scholarly prose, thermodynamic mathematics, and philosophical rigor.',
+                desc: 'Deep scholarly prose and thermodynamic mathematics.',
                 icon: <GraduationCap size={16} className="text-yellow-500" />
               },
               {
                 id: 'esl_en' as StudyProfile,
                 label: 'Simplified (EN)',
-                desc: 'Shorter sentences, clear explanations, and simplified vocabularies.',
+                desc: 'Clear explanations and simplified vocabularies.',
                 icon: <HelpCircle size={16} className="text-indigo-400" />
               },
               {
                 id: 'translated_es' as StudyProfile,
                 label: 'Español (ES)',
-                desc: 'Fully translated core content and analyses in beautiful Spanish.',
+                desc: 'Core content and analyses in beautiful Spanish.',
                 icon: <Globe size={16} className="text-rose-400" />
               },
               {
                 id: 'translated_id' as StudyProfile,
                 label: 'Indonesian',
-                desc: 'Complete translations and localized theological alignment in Bahasa Indonesia.',
+                desc: 'Theological alignments in Bahasa Indonesia.',
                 icon: <Globe size={16} className="text-emerald-400" />
               }
             ].map((prof) => (
@@ -156,62 +154,26 @@ export default function OnboardingModal({
       )
     },
     {
-      title: "Offline-First Support",
-      subtitle: "Seamless learning on the go",
+      title: "Offline-First Study",
+      subtitle: "Learn anytime, anywhere",
       icon: <WifiOff className="w-12 h-12 text-rose-400 animate-pulse" />,
       content: (
         <div className="space-y-4">
           <p className={`text-sm leading-relaxed ${isBright ? 'text-neutral-600' : 'text-neutral-300'}`}>
-            Never lose your place. Logos-Explorer is built from the ground up to be resilient, offline-first, and fully responsive:
+            All active episode data, study slides, and summaries are cached in your browser. If you lose internet, the workspace seamlessly switches to Offline Mode so your studies continue uninterrupted.
           </p>
 
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="p-2 bg-rose-500/10 border border-rose-500/20 rounded-lg text-rose-400 mt-0.5">
-                <Wifi size={16} />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold">Auto-Caching State</h4>
-                <p className="text-[11px] text-neutral-400 mt-0.5 leading-relaxed">
-                  All parsed episode configurations, custom spreadsheets, interactive notes, and layout settings are cached automatically in your browser's local store.
-                </p>
-              </div>
+          <div className="p-4 rounded-xl border border-dashed border-neutral-800 bg-[#060609]/40 text-left text-xs space-y-2">
+            <div className="flex items-center gap-2 font-semibold text-emerald-400">
+              <CheckCircle size={14} />
+              <span>Ready for Action</span>
             </div>
-
-            <div className="flex items-start gap-3">
-              <div className="p-2 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-400 mt-0.5">
-                <Zap size={16} />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold">Offline Indicator</h4>
-                <p className="text-[11px] text-neutral-400 mt-0.5 leading-relaxed">
-                  When you lose internet, the app shifts into <span className="font-mono text-rose-400">Offline Cache Active</span> mode. YouTube video embeds will show fallbacks, but all transcript sections, charts, slide decks, and audio playbacks remain fully active.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "You are ready!",
-      subtitle: "Start exploring the Logos-Explorer",
-      icon: <CheckCircle className="w-12 h-12 text-emerald-400" />,
-      content: (
-        <div className="space-y-4 text-center py-2">
-          <p className={`text-sm leading-relaxed ${isBright ? 'text-neutral-600' : 'text-neutral-300'}`}>
-            You have unlocked full access to our high-fidelity study system.
-          </p>
-          <div className={`mx-auto max-w-sm p-4 rounded-xl border text-xs text-left ${
-            isBright ? 'bg-amber-50 border-amber-200/50 text-neutral-700' : 'bg-yellow-950/10 border-yellow-500/15 text-neutral-300'
-          }`}>
-            <div className="font-semibold text-yellow-500 mb-1 flex items-center gap-1">
-              <span>💡 Quick Tip:</span>
-            </div>
-            You can re-open this onboarding guide or switch modes at any time in the app header or about section! Go to the **Admin Workspace** if you'd like to import your own custom spreadsheet data.
+            <p className="text-[11px] text-neutral-400 leading-relaxed">
+              Use the Study Selectors to pick an episode and choose your modules. Visit the Admin Dashboard if you want to import or manage your spreadsheet datasets.
+            </p>
           </div>
 
-          <div className="pt-4 flex justify-center">
+          <div className="pt-2 flex justify-center">
             <label className="inline-flex items-center gap-2 cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -250,7 +212,7 @@ export default function OnboardingModal({
                 <Compass className="text-white animate-spin-slow" size={16} />
               </div>
               <div>
-                <span className="text-[10px] font-mono tracking-widest text-yellow-500 uppercase font-bold block leading-none">Onboarding Guide</span>
+                <span className="text-[10px] font-mono tracking-widest text-yellow-500 uppercase font-bold block leading-none">Logos-Explorer User Guide</span>
                 <h3 className="font-serif text-sm font-bold tracking-tight mt-0.5">Welcome to Logos-Explorer</h3>
               </div>
             </div>
