@@ -798,8 +798,30 @@ export default function App() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-            {/* Profile pill group */}
-            <div className={`flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
+            {/* Profile Dropdown for Mobile */}
+            <div className={`sm:hidden flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1.5 rounded-xl self-stretch w-full`}>
+              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase pl-1.5 font-bold select-none whitespace-nowrap`}>Study Profile:</span>
+              <select
+                value={activeProfile}
+                onChange={(e) => setActiveProfile(e.target.value as StudyProfile)}
+                className={`flex-1 bg-transparent border-0 text-xs font-medium focus:ring-0 focus:outline-none cursor-pointer py-1 pr-6 ${
+                  isBright ? 'text-neutral-900' : 'text-neutral-100'
+                }`}
+              >
+                {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
+                  <option 
+                    key={profile} 
+                    value={profile}
+                    className={isBright ? 'bg-white text-neutral-900' : 'bg-neutral-950 text-neutral-100'}
+                  >
+                    {getProfileLabel(profile)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Profile pill group for Desktop */}
+            <div className={`hidden sm:flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
               <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase px-2 font-bold select-none whitespace-nowrap`}>Study Profile:</span>
               {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
                 <button
