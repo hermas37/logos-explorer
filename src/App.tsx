@@ -29,7 +29,9 @@ import {
   Moon,
   HelpCircle,
   Printer,
-  Video
+  Video,
+  Clock,
+  Construction
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -177,6 +179,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [selectedAssetTab, setSelectedAssetTab] = useState<string>('');
+  const [showScholarlyLibrary, setShowScholarlyLibrary] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(() => {
     return localStorage.getItem('logos_onboarding_completed') !== 'true';
   });
@@ -498,15 +501,133 @@ export default function App() {
       });
   }, []);
 
-  // When selectedEpisode changes, automatically select the first dynamic tab
+  // When selectedEpisode changes, automatically select the first dynamic tab (audio_overview)
   useEffect(() => {
     if (selectedEpisode) {
-      const tabs = getDynamicTabs(selectedEpisode);
-      if (tabs.length > 0) {
-        setSelectedAssetTab(tabs[0].id);
-      }
+      setSelectedAssetTab('audio_overview');
     }
   }, [selectedEpisode]);
+
+  const notebookLMOptions = [
+    { id: 'audio_overview', label: 'Audio Overview' },
+    { id: 'video_overview_short', label: 'Video Overview Short' },
+    { id: 'infographic', label: 'Infographic' },
+    { id: 'slide_deck', label: 'Slide Deck' },
+    { id: 'reports', label: 'Reports' },
+    { id: 'quizzes', label: 'Quizzes' }
+  ];
+
+  const hasDataForOption = (id: string) => {
+    if (!selectedEpisode) return false;
+    switch (id) {
+      case 'audio_overview':
+        return !!selectedEpisode.audio_overview && (
+          !!selectedEpisode.audio_overview.podcast_url || 
+          !!selectedEpisode.audio_overview.brief_url || 
+          !!selectedEpisode.audio_overview.podcast_url_by_profile?.[activeProfile]
+        );
+      case 'video_overview_short':
+        return !!selectedEpisode.short_video_overview && !!selectedEpisode.short_video_overview.video_url;
+      case 'infographic':
+        return !!selectedEpisode.study_modules?.infographic;
+      case 'slide_deck':
+        return !!selectedEpisode.study_modules?.slide_decks && selectedEpisode.study_modules.slide_decks.length > 0;
+      case 'reports':
+        return !!selectedEpisode.study_modules?.specialized_reports;
+      case 'quizzes':
+        return false;
+      default:
+        return false;
+    }
+  };
+
+  const getScholarlyTabs = (episode: Episode) => {
+    const tabs: { id: string; label: string }[] = [];
+    if (episode.study_modules?.executive_summary) {
+      tabs.push({ id: 'executive_summary', label: 'Executive Summary' });
+    }
+    if (episode.scenes && episode.scenes.length > 0) {
+      tabs.push({ id: 'timeline', label: 'Interactive Timeline' });
+    }
+    if (episode.inspiring_quotations && episode.inspiring_quotations.length > 0) {
+      tabs.push({ id: 'quotes', label: 'Inspiring Quotations' });
+    }
+    if (episode.study_modules?.mind_map) {
+      tabs.push({ id: 'mind_map', label: 'Mind Map' });
+    }
+    if (episode.study_modules?.data_table) {
+      tabs.push({ id: 'data_table', label: 'Constants Table' });
+    }
+    if (episode.study_modules?.book_review) {
+      tabs.push({ id: 'book_review', label: 'Selected Book Review' });
+    }
+    if (episode.study_modules?.inspiring_story) {
+      tabs.push({ id: 'inspiring_story', label: 'Inspiring Story' });
+    }
+    if (episode.sources && episode.sources.length > 0) {
+      tabs.push({ id: 'sources', label: 'Sources Used' });
+    }
+    if (episode.study_modules?.custom_sections) {
+      episode.study_modules.custom_sections.forEach((section) => {
+        tabs.push({ id: `custom_${section.id}`, label: section.label });
+      });
+    }
+    return tabs;
+  };
+
+  const getOptionIcon = (id: string) => {
+    switch (id) {
+      case 'audio_overview':
+        return <Rss size={13} className={tColors.iconColor} />;
+      case 'video_overview_short':
+        return <Video size={13} className={tColors.iconColor} />;
+      case 'infographic':
+        return <Sparkles size={13} className={tColors.iconColor} />;
+      case 'slide_deck':
+        return <FileText size={13} className={tColors.iconColor} />;
+      case 'reports':
+        return <BookOpenCheck size={13} className={tColors.iconColor} />;
+      case 'quizzes':
+        return <Award size={13} className={tColors.iconColor} />;
+      default:
+        return <Sparkles size={13} className={tColors.iconColor} />;
+    }
+  };
+
+  const renderInProgressCard = (label: string) => {
+    return (
+      <div className={`flex flex-col items-center justify-center text-center p-12 rounded-2xl border ${
+        isBright 
+          ? 'bg-neutral-50 border-neutral-200 text-neutral-600' 
+          : 'bg-[#060609]/60 border-neutral-900 text-neutral-400'
+      } shadow-2xl relative overflow-hidden group`}>
+        {/* Decorative pulse glow */}
+        <div className="absolute -inset-px bg-gradient-to-r from-indigo-500/10 via-purple-500/5 to-emerald-500/10 opacity-50 blur-xl group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+        
+        <div className="relative space-y-4 max-w-sm z-10">
+          <div className="w-14 h-14 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400 mx-auto animate-pulse">
+            <Clock size={24} className="text-indigo-400" />
+          </div>
+          <div className="space-y-1.5">
+            <h3 className="font-serif text-base text-neutral-200 font-bold tracking-tight">
+              {label} is in progress
+            </h3>
+            <p className="font-sans text-xs text-neutral-500 leading-relaxed">
+              Our content curation pipeline is currently organizing the theological references, academic papers, and NotebookLM assets for this module.
+            </p>
+          </div>
+          
+          {/* Subtle status tag */}
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-neutral-900/80 border border-neutral-800">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping" />
+            <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider font-semibold">
+              Synthesis Pending
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // Helper to dynamically collect available study asset modules from dataset
   const getDynamicTabs = (episode: Episode) => {
@@ -977,28 +1098,49 @@ export default function App() {
                 exit={{ opacity: 0, y: -15 }}
                 className="space-y-6"
               >
-                {/* Search Bar / Filters */}
-                <div className={`flex flex-col sm:flex-row items-center gap-4 ${isBright ? 'bg-white' : 'bg-[#0a0a0e]'} p-4 rounded-xl border ${borderMuted}`}>
-                  <div className="relative w-full">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" size={16} />
-                    <input
-                      type="text"
-                      placeholder="Search episodes, topics, or historical figures..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className={`w-full ${isBright ? 'bg-neutral-50 border-neutral-200 text-neutral-800' : 'bg-neutral-950 border-neutral-800 text-neutral-200'} border rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:${tColors.selectActiveBorder} transition-colors`}
-                    />
+                {/* Available Episodes Selector (Replacing Search Bar) */}
+                <div className={`p-6 rounded-2xl border ${borderMuted} ${isBright ? 'bg-white shadow-sm' : 'bg-[#0a0a0e]/80'} space-y-4 shadow-xl`}>
+                  <div className="flex items-center justify-between border-b border-neutral-900 pb-3">
+                    <div className="flex items-center gap-2">
+                      <BookOpenCheck size={18} className={tColors.iconColor} />
+                      <h3 className="font-serif text-sm md:text-base text-neutral-200 font-semibold uppercase tracking-wider">
+                        Available Study Episodes
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-mono text-neutral-500 uppercase">
+                      {episodes.length} Episodes Loaded
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {episodes.map((episode) => {
+                      const title = episode.title[activeProfile] || episode.title['academic_en'];
+                      return (
+                        <button
+                          key={episode.id}
+                          onClick={() => setSelectedEpisode(episode)}
+                          className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between gap-3 group cursor-pointer ${
+                            isBright
+                              ? 'bg-neutral-50 border-neutral-200 hover:border-neutral-300 hover:bg-neutral-100 shadow-sm'
+                              : 'bg-[#060609]/60 border-neutral-900 hover:border-neutral-800 hover:bg-neutral-900/30'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 overflow-hidden">
+                            <span className={`font-mono text-xs font-bold px-2.5 py-1 rounded shrink-0 ${
+                              isBright ? 'bg-neutral-100 text-neutral-600' : 'bg-neutral-900 text-neutral-400'
+                            }`}>
+                              EP {episode.id}
+                            </span>
+                            <span className="font-serif text-xs md:text-sm text-neutral-200 group-hover:text-indigo-400 transition-colors truncate">
+                              {title}
+                            </span>
+                          </div>
+                          <ChevronRight size={14} className="text-neutral-600 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
-
-                {/* Empty State */}
-                {filteredEpisodes.length === 0 && (
-                  <div className="text-center py-20 bg-neutral-900/20 rounded-xl border border-neutral-900">
-                    <BookOpen size={48} className="mx-auto text-neutral-600 mb-4 stroke-1" />
-                    <h3 className="font-serif text-lg text-neutral-400">No episodes matched your search</h3>
-                    <p className="text-xs text-neutral-500 mt-1">Try resetting your keywords or filters</p>
-                  </div>
-                )}
 
                 {/* Episodes Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1094,75 +1236,63 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* 1. HTML5 Dual-Source Audio overview */}
-                {selectedEpisode.audio_overview && (
-                  <AudioPlayer
-                    podcastUrl={
-                      selectedEpisode.audio_overview.podcast_url_by_profile?.[activeProfile] ||
-                      selectedEpisode.audio_overview.podcast_url
-                    }
-                    briefUrl={
-                      selectedEpisode.audio_overview.brief_url_by_profile?.[activeProfile] ||
-                      selectedEpisode.audio_overview.brief_url
-                    }
-                    activeProfile={activeProfile}
-                  />
-                )}
-
-                {/* 2. Interactive Asset Tab Section (Dynamically generated tabs) */}
+                {/* 2. Interactive Asset Tab Section (NotebookLM Studio sequential options) */}
                 <div className="space-y-6">
                   {/* Dynamic Tab Picker & Export Action Bar */}
-                  <div className="border-b border-neutral-800 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-1">
-                    <div className="flex items-center overflow-x-auto custom-scrollbar gap-1.5 pb-px flex-grow max-w-full">
-                      {getDynamicTabs(selectedEpisode).map((tab) => (
-                        <button
-                          key={tab.id}
-                          id={`asset-tab-${tab.id}`}
-                          onClick={() => setSelectedAssetTab(tab.id)}
-                          className={`px-4 py-3 rounded-t-xl text-xs font-medium whitespace-nowrap transition-all border-b-2 -mb-[5px] flex items-center gap-1.5 ${
-                            selectedAssetTab === tab.id
-                              ? `${tColors.selectActiveBorder} ${tColors.accentText} ${tColors.selectTabBg} font-semibold`
-                              : 'border-transparent text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/20'
-                          }`}
+                  <div className="border-b border-neutral-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2">
+                    
+                    {/* Mobile Friendly Dropdown Selector */}
+                    <div className="block md:hidden w-full">
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1.5 font-semibold tracking-wider">NotebookLM Studio Option:</label>
+                      <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg`}>
+                        <select
+                          value={selectedAssetTab}
+                          onChange={(e) => setSelectedAssetTab(e.target.value)}
+                          className={`w-full bg-transparent border-none text-xs font-serif font-bold focus:outline-none focus:ring-0 ${isBright ? 'text-neutral-900' : 'text-neutral-100'} cursor-pointer`}
                         >
-                          {tab.id === 'short_video_overview' && <Video size={12} className={tColors.iconColor} />}
-                          {tab.id === 'executive_summary' && <FileText size={12} className={tColors.iconColor} />}
-                          {tab.id === 'timeline' && <Play size={12} className={`fill-current/10 ${tColors.iconColor}`} />}
-                          {tab.id === 'quotes' && <Quote size={12} className={tColors.iconColor} />}
-                          {tab.id === 'mind_map' && <Cpu size={12} className={tColors.iconColor} />}
-                          {tab.id === 'infographic' && <Sparkles size={12} className={tColors.iconColor} />}
-                          {tab.id === 'book_review' && <BookOpen size={12} className={tColors.iconColor} />}
-                          {tab.id === 'inspiring_story' && <Flame size={12} className={tColors.iconColor} />}
-                          {tab.id === 'sources' && <Bookmark size={12} className={tColors.iconColor} />}
-                          {tab.id.startsWith('custom_') && <Award size={12} className={tColors.iconColor} />}
-                          <span>{tab.label}</span>
-                        </button>
-                      ))}
+                          {notebookLMOptions.map((opt) => (
+                            <option 
+                              key={opt.id} 
+                              value={opt.id} 
+                              className={isBright ? 'bg-white text-neutral-900' : 'bg-neutral-950 text-neutral-200'}
+                            >
+                              {opt.label} {!hasDataForOption(opt.id) ? ' (In Progress)' : ''}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
-                    {/* PDF / Printable Export Suite */}
-                    <div className="flex items-center gap-2 self-end lg:self-center shrink-0 mb-1 lg:mb-0">
-                      {/* Active Printable Section Trigger (Executive Summary or Book Review) */}
-                      {(selectedAssetTab === 'executive_summary' || selectedAssetTab === 'book_review') && (
-                        <button
-                          onClick={() => {
-                            if (selectedAssetTab === 'executive_summary' || selectedAssetTab === 'book_review') {
-                              printEpisodePDF(selectedEpisode, activeProfile, selectedAssetTab);
-                            }
-                          }}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono transition-all duration-200 cursor-pointer ${
-                            isBright
-                              ? 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100 shadow-sm'
-                              : 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:bg-neutral-850'
-                          }`}
-                          title={`Print currently selected ${selectedAssetTab === 'executive_summary' ? 'Executive Summary' : 'Book Review'}`}
-                        >
-                          <Printer size={13} className={tColors.iconColor} />
-                          <span>Print Section (PDF)</span>
-                        </button>
-                      )}
+                    {/* Desktop Sequential Tab Picker */}
+                    <div className="hidden md:flex items-center overflow-x-auto custom-scrollbar gap-1 pb-px flex-grow max-w-full">
+                      {notebookLMOptions.map((opt) => {
+                        const isActive = selectedAssetTab === opt.id;
+                        const hasData = hasDataForOption(opt.id);
+                        return (
+                          <button
+                            key={opt.id}
+                            id={`asset-tab-${opt.id}`}
+                            onClick={() => setSelectedAssetTab(opt.id)}
+                            className={`px-3.5 py-3 rounded-t-xl text-xs font-medium whitespace-nowrap transition-all border-b-2 -mb-[9px] flex items-center gap-1.5 ${
+                              isActive
+                                ? `${tColors.selectActiveBorder} ${tColors.accentText} ${tColors.selectTabBg} font-semibold`
+                                : 'border-transparent text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/20'
+                            }`}
+                          >
+                            {getOptionIcon(opt.id)}
+                            <span>{opt.label}</span>
+                            {!hasData && (
+                              <span className="text-[9px] font-mono bg-neutral-900 border border-neutral-800 text-neutral-500 px-1.5 py-0.2 rounded font-bold uppercase scale-90">
+                                In Progress
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
 
-                      {/* Complete Study Companion Trigger */}
+                    {/* Complete Study Companion Trigger */}
+                    <div className="flex items-center gap-2 self-end md:self-center shrink-0 mb-1 md:mb-0">
                       <button
                         onClick={() => printEpisodePDF(selectedEpisode, activeProfile, 'all')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono font-medium text-white shadow-md transition-all duration-200 cursor-pointer ${tColors.accentBg} ${tColors.accentBgHover} ${tColors.accentGlow}`}
@@ -1184,191 +1314,306 @@ export default function App() {
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.2 }}
                       >
-                        {selectedAssetTab === 'short_video_overview' && selectedEpisode.short_video_overview && (
-                          <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-neutral-800 bg-gradient-to-tr from-neutral-950 via-[#0a0812] to-neutral-950">
-                            <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
-                              <div className="w-10 h-10 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400">
-                                <Video size={20} className="animate-pulse" />
+                        {/* 1. AUDIO OVERVIEW */}
+                        {selectedAssetTab === 'audio_overview' && (
+                          hasDataForOption('audio_overview') ? (
+                            <AudioPlayer
+                              podcastUrl={
+                                selectedEpisode.audio_overview!.podcast_url_by_profile?.[activeProfile] ||
+                                selectedEpisode.audio_overview!.podcast_url
+                              }
+                              briefUrl={
+                                selectedEpisode.audio_overview!.brief_url_by_profile?.[activeProfile] ||
+                                selectedEpisode.audio_overview!.brief_url
+                              }
+                              activeProfile={activeProfile}
+                            />
+                          ) : (
+                            renderInProgressCard('Audio Overview')
+                          )
+                        )}
+
+                        {/* 2. VIDEO OVERVIEW SHORT */}
+                        {selectedAssetTab === 'video_overview_short' && (
+                          hasDataForOption('video_overview_short') ? (
+                            <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-neutral-800 bg-gradient-to-tr from-neutral-950 via-[#0a0812] to-neutral-950">
+                              <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
+                                <div className="w-10 h-10 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400">
+                                  <Video size={20} className="animate-pulse" />
+                                </div>
+                                <div>
+                                  <h3 className="font-serif text-lg text-neutral-200">
+                                    {selectedEpisode.short_video_overview!.title?.[activeProfile] || 
+                                     selectedEpisode.short_video_overview!.title?.['academic_en'] || 
+                                     'NotebookLM Short Video Overview'}
+                                  </h3>
+                                  <p className="text-[10px] font-mono text-neutral-500 uppercase">Interactive Studio Media Brief</p>
+                                </div>
                               </div>
-                              <div>
-                                <h3 className="font-serif text-lg text-neutral-200">
-                                  {selectedEpisode.short_video_overview.title?.[activeProfile] || 
-                                   selectedEpisode.short_video_overview.title?.['academic_en'] || 
-                                   'NotebookLM Short Video Overview'}
-                                </h3>
-                                <p className="text-[10px] font-mono text-neutral-500 uppercase">Interactive Studio Media Brief</p>
+                              
+                              <div className="relative aspect-video rounded-xl overflow-hidden bg-black border border-neutral-800 shadow-2xl">
+                                <video 
+                                  src={selectedEpisode.short_video_overview!.video_url} 
+                                  controls 
+                                  className="w-full h-full object-contain"
+                                  preload="metadata"
+                                  playsInline
+                                />
                               </div>
+
+                              {selectedEpisode.short_video_overview!.description && (
+                                <p className="text-sm text-neutral-300 leading-relaxed italic border-l border-indigo-900/50 pl-4">
+                                  {selectedEpisode.short_video_overview!.description[activeProfile] || 
+                                   selectedEpisode.short_video_overview!.description['academic_en']}
+                                </p>
+                              )}
                             </div>
-                            
-                            <div className="relative aspect-video rounded-xl overflow-hidden bg-black border border-neutral-800 shadow-2xl">
-                              <video 
-                                src={selectedEpisode.short_video_overview.video_url} 
-                                controls 
-                                className="w-full h-full object-contain"
-                                preload="metadata"
-                                playsInline
-                              />
-                            </div>
-
-                            {selectedEpisode.short_video_overview.description && (
-                              <p className="text-sm text-neutral-300 leading-relaxed italic border-l border-indigo-900/50 pl-4">
-                                {selectedEpisode.short_video_overview.description[activeProfile] || 
-                                 selectedEpisode.short_video_overview.description['academic_en']}
-                              </p>
-                            )}
-                          </div>
+                          ) : (
+                            renderInProgressCard('Video Overview Short')
+                          )
                         )}
 
-                        {selectedAssetTab === 'executive_summary' && selectedEpisode.study_modules.executive_summary && (
-                          <ExecutiveSummary 
-                            summaryData={selectedEpisode.study_modules.executive_summary} 
-                            activeProfile={activeProfile} 
-                          />
-                        )}
-
-                        {selectedAssetTab === 'timeline' && (
-                          <Timeline 
-                            scenes={selectedEpisode.scenes} 
-                            activeProfile={activeProfile} 
-                            youtubeVideoId={selectedEpisode.youtube_video_id} 
-                          />
-                        )}
-
-                        {selectedAssetTab === 'quotes' && (
-                          <Quotations 
-                            quotations={selectedEpisode.inspiring_quotations} 
-                            activeProfile={activeProfile} 
-                          />
-                        )}
-
-                        {selectedAssetTab === 'mind_map' && (
-                          <MindMap 
-                            mindMapData={selectedEpisode.study_modules.mind_map} 
-                            activeProfile={activeProfile} 
-                          />
-                        )}
-
+                        {/* 3. INFOGRAPHIC */}
                         {selectedAssetTab === 'infographic' && (
-                          <Infographic 
-                            infographicData={selectedEpisode.study_modules.infographic} 
-                            activeProfile={activeProfile} 
-                          />
+                          hasDataForOption('infographic') ? (
+                            <Infographic 
+                              infographicData={selectedEpisode.study_modules.infographic!} 
+                              activeProfile={activeProfile} 
+                            />
+                          ) : (
+                            renderInProgressCard('Infographic')
+                          )
                         )}
 
-                        {selectedAssetTab === 'slide_decks' && (
-                          <SlideDeckComponent 
-                            slideDecks={selectedEpisode.study_modules.slide_decks} 
-                            activeProfile={activeProfile} 
-                          />
+                        {/* 4. SLIDE DECK */}
+                        {selectedAssetTab === 'slide_deck' && (
+                          hasDataForOption('slide_deck') ? (
+                            <SlideDeckComponent 
+                              slideDecks={selectedEpisode.study_modules.slide_decks!} 
+                              activeProfile={activeProfile} 
+                            />
+                          ) : (
+                            renderInProgressCard('Slide Deck')
+                          )
                         )}
 
-                        {selectedAssetTab === 'specialized_reports' && (
-                          <ReportPanel 
-                            reports={selectedEpisode.study_modules.specialized_reports} 
-                            activeProfile={activeProfile} 
-                          />
+                        {/* 5. REPORTS */}
+                        {selectedAssetTab === 'reports' && (
+                          hasDataForOption('reports') ? (
+                            <ReportPanel 
+                              reports={selectedEpisode.study_modules.specialized_reports!} 
+                              activeProfile={activeProfile} 
+                            />
+                          ) : (
+                            renderInProgressCard('Reports')
+                          )
                         )}
 
-                        {selectedAssetTab === 'data_table' && (
-                          <DataTable 
-                            dataTableData={selectedEpisode.study_modules.data_table} 
-                            activeProfile={activeProfile} 
-                          />
-                        )}
-
-                        {selectedAssetTab === 'book_review' && selectedEpisode.study_modules.book_review && (
-                          <BookReviewComponent 
-                            bookReviewData={selectedEpisode.study_modules.book_review} 
-                            activeProfile={activeProfile} 
-                          />
-                        )}
-
-                        {selectedAssetTab === 'inspiring_story' && selectedEpisode.study_modules.inspiring_story && (
-                          <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-amber-900/20 bg-gradient-to-tr from-neutral-950 via-[#0a0705] to-neutral-950">
-                            <div className="flex items-center gap-3 border-b border-amber-900/10 pb-4">
-                              <div className="w-10 h-10 rounded-full bg-amber-950/40 border border-amber-900/50 flex items-center justify-center text-amber-400">
-                                <Flame size={20} className="animate-pulse" />
-                              </div>
-                              <div>
-                                <h3 className="font-serif text-lg text-amber-200">Inspiring Narrative</h3>
-                                <p className="text-[10px] font-mono text-neutral-500 uppercase">A Story of Discovery, Devotion, and Wisdom</p>
-                              </div>
-                            </div>
-                            <div className="font-serif text-base md:text-lg text-neutral-300 leading-relaxed italic pr-4 pl-6 border-l-2 border-amber-500/30 whitespace-pre-line">
-                              {selectedEpisode.study_modules.inspiring_story[activeProfile] || selectedEpisode.study_modules.inspiring_story['academic_en']}
-                            </div>
-                          </div>
-                        )}
-
-                        {selectedAssetTab === 'sources' && selectedEpisode.sources && (
-                          <div className="space-y-6 max-w-4xl mx-auto p-4">
-                            <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
-                              <div className="w-10 h-10 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400">
-                                <Bookmark size={20} />
-                              </div>
-                              <div>
-                                <h3 className="font-serif text-lg text-neutral-200">Sources & Reference Literature</h3>
-                                <p className="text-[10px] font-mono text-neutral-500 uppercase">Primary Material, Academic Research & Scriptures Cited</p>
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {selectedEpisode.sources.map((source, idx) => (
-                                <div key={idx} className="glass-card p-5 rounded-xl border border-neutral-800 bg-neutral-950/30 hover:border-neutral-700 transition-all">
-                                  <div className="flex items-start justify-between gap-3">
-                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-900 text-neutral-400 uppercase tracking-wider">
-                                      {source.type || 'literature'}
-                                    </span>
-                                    {source.url && (
-                                      <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300">
-                                        <Link2 size={14} />
-                                      </a>
-                                    )}
-                                  </div>
-                                  <h4 className="font-serif text-base text-neutral-100 font-bold mt-2 leading-snug">
-                                    {source.title}
-                                  </h4>
-                                  <p className="text-xs text-neutral-400 mt-1">
-                                    {source.author} {source.year ? `(${source.year})` : ''}
-                                  </p>
-                                  {source.citation && (
-                                    <p className="text-[11px] font-mono text-neutral-500 mt-3 border-t border-neutral-900 pt-2 italic">
-                                      {source.citation}
-                                    </p>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {selectedAssetTab.startsWith('custom_') && (
-                          (() => {
-                            const customId = selectedAssetTab.replace('custom_', '');
-                            const section = selectedEpisode.study_modules?.custom_sections?.find(s => s.id === customId);
-                            if (!section) return null;
-                            const text = section.content[activeProfile] || section.content['academic_en'] || '';
-                            return (
-                              <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-neutral-800 bg-gradient-to-tr from-neutral-950 via-[#09090d] to-neutral-950">
-                                <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
-                                  <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300">
-                                    <Award size={20} />
-                                  </div>
-                                  <div>
-                                    <h3 className="font-serif text-lg text-neutral-200">{section.label}</h3>
-                                    <p className="text-[10px] font-mono text-neutral-500 uppercase">Custom Dialogue Module</p>
-                                  </div>
-                                </div>
-                                <div className="font-sans text-sm md:text-base text-neutral-300 leading-relaxed whitespace-pre-line">
-                                  {text}
-                                </div>
-                              </div>
-                            );
-                          })()
+                        {/* 6. QUIZZES */}
+                        {selectedAssetTab === 'quizzes' && (
+                          renderInProgressCard('Quizzes')
                         )}
                       </motion.div>
                     </AnimatePresence>
                   </div>
                 </div>
+
+                {/* 3. Collapsible Scholarly Research Library (for Executive Summary, Timeline, Quotes, etc.) */}
+                {getScholarlyTabs(selectedEpisode).length > 0 && (
+                  <div className={`mt-10 rounded-2xl border ${borderMuted} ${isBright ? 'bg-white shadow-sm' : 'bg-[#0a0a0e]/60'} overflow-hidden shadow-xl`}>
+                    <button
+                      onClick={() => setShowScholarlyLibrary(!showScholarlyLibrary)}
+                      className="w-full flex items-center justify-between px-6 py-4 border-b border-neutral-900 bg-neutral-950/40 hover:bg-neutral-950/70 transition-all text-left cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <BookOpenCheck size={18} className={tColors.iconColor} />
+                        <div>
+                          <h4 className="font-serif text-sm md:text-base text-neutral-200 font-bold">
+                            Scholarly Research Library
+                          </h4>
+                          <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-wide">
+                            Deep-dives, Timelines, Mindmaps, and Academic Text Materials
+                          </p>
+                        </div>
+                      </div>
+                      <span className={`text-[10px] font-mono px-2.5 py-1 rounded bg-neutral-900 text-neutral-400 flex items-center gap-1 transition-transform duration-350 ${showScholarlyLibrary ? 'rotate-180' : ''}`}>
+                        {showScholarlyLibrary ? 'HIDE' : 'SHOW'} ▼
+                      </span>
+                    </button>
+
+                    <AnimatePresence>
+                      {showScholarlyLibrary && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="border-t border-neutral-900 p-6 space-y-6 overflow-hidden"
+                        >
+                          {/* Inner Tabs Selector for Scholarly resources */}
+                          <div className="flex items-center overflow-x-auto custom-scrollbar gap-1.5 pb-2 border-b border-neutral-900">
+                            {getScholarlyTabs(selectedEpisode).map((tab) => {
+                              const isActive = selectedAssetTab === tab.id;
+                              return (
+                                <button
+                                  key={tab.id}
+                                  onClick={() => setSelectedAssetTab(tab.id)}
+                                  className={`px-3.5 py-2 rounded-lg text-xs font-serif font-medium whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+                                    isActive
+                                      ? `${tColors.accentBg} text-white font-semibold shadow-md`
+                                      : 'bg-[#060609]/60 border border-neutral-900 text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/30'
+                                  }`}
+                                >
+                                  {tab.id === 'executive_summary' && <FileText size={12} />}
+                                  {tab.id === 'timeline' && <Play size={12} />}
+                                  {tab.id === 'quotes' && <Quote size={12} />}
+                                  {tab.id === 'mind_map' && <Cpu size={12} />}
+                                  {tab.id === 'data_table' && <Sparkles size={12} />}
+                                  {tab.id === 'book_review' && <BookOpen size={12} />}
+                                  {tab.id === 'inspiring_story' && <Flame size={12} />}
+                                  {tab.id === 'sources' && <Bookmark size={12} />}
+                                  {tab.id.startsWith('custom_') && <Award size={12} />}
+                                  <span>{tab.label}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Render selected scholarly tab if it is active */}
+                          {getScholarlyTabs(selectedEpisode).some(t => t.id === selectedAssetTab) && (
+                            <div className="pt-2">
+                              {selectedAssetTab === 'executive_summary' && selectedEpisode.study_modules.executive_summary && (
+                                <ExecutiveSummary 
+                                  summaryData={selectedEpisode.study_modules.executive_summary} 
+                                  activeProfile={activeProfile} 
+                                />
+                              )}
+
+                              {selectedAssetTab === 'timeline' && (
+                                <Timeline 
+                                  scenes={selectedEpisode.scenes} 
+                                  activeProfile={activeProfile} 
+                                  youtubeVideoId={selectedEpisode.youtube_video_id} 
+                                />
+                              )}
+
+                              {selectedAssetTab === 'quotes' && (
+                                <Quotations 
+                                  quotations={selectedEpisode.inspiring_quotations} 
+                                  activeProfile={activeProfile} 
+                                />
+                              )}
+
+                              {selectedAssetTab === 'mind_map' && (
+                                <MindMap 
+                                  mindMapData={selectedEpisode.study_modules.mind_map} 
+                                  activeProfile={activeProfile} 
+                                />
+                              )}
+
+                              {selectedAssetTab === 'data_table' && (
+                                <DataTable 
+                                  dataTableData={selectedEpisode.study_modules.data_table} 
+                                  activeProfile={activeProfile} 
+                                />
+                              )}
+
+                              {selectedAssetTab === 'book_review' && selectedEpisode.study_modules.book_review && (
+                                <BookReviewComponent 
+                                  bookReviewData={selectedEpisode.study_modules.book_review} 
+                                  activeProfile={activeProfile} 
+                                />
+                              )}
+
+                              {selectedAssetTab === 'inspiring_story' && selectedEpisode.study_modules.inspiring_story && (
+                                <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-amber-900/20 bg-gradient-to-tr from-neutral-950 via-[#0a0705] to-neutral-950">
+                                  <div className="flex items-center gap-3 border-b border-amber-900/10 pb-4">
+                                    <div className="w-10 h-10 rounded-full bg-amber-950/40 border border-amber-900/50 flex items-center justify-center text-amber-400">
+                                      <Flame size={20} className="animate-pulse" />
+                                    </div>
+                                    <div>
+                                      <h3 className="font-serif text-lg text-amber-200">Inspiring Narrative</h3>
+                                      <p className="text-[10px] font-mono text-neutral-500 uppercase">A Story of Discovery, Devotion, and Wisdom</p>
+                                    </div>
+                                  </div>
+                                  <div className="font-serif text-base md:text-lg text-neutral-300 leading-relaxed italic pr-4 pl-6 border-l-2 border-amber-500/30 whitespace-pre-line">
+                                    {selectedEpisode.study_modules.inspiring_story[activeProfile] || selectedEpisode.study_modules.inspiring_story['academic_en']}
+                                  </div>
+                                </div>
+                              )}
+
+                              {selectedAssetTab === 'sources' && selectedEpisode.sources && (
+                                <div className="space-y-6 max-w-4xl mx-auto p-4">
+                                  <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
+                                    <div className="w-10 h-10 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400">
+                                      <Bookmark size={20} />
+                                    </div>
+                                    <div>
+                                      <h3 className="font-serif text-lg text-neutral-200">Sources & Reference Literature</h3>
+                                      <p className="text-[10px] font-mono text-neutral-500 uppercase">Primary Material, Academic Research & Scriptures Cited</p>
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {selectedEpisode.sources.map((source, idx) => (
+                                      <div key={idx} className="glass-card p-5 rounded-xl border border-neutral-800 bg-neutral-950/30 hover:border-neutral-700 transition-all">
+                                        <div className="flex items-start justify-between gap-3">
+                                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-900 text-neutral-400 uppercase tracking-wider">
+                                            {source.type || 'literature'}
+                                          </span>
+                                          {source.url && (
+                                            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300">
+                                              <Link2 size={14} />
+                                            </a>
+                                          )}
+                                        </div>
+                                        <h4 className="font-serif text-base text-neutral-100 font-bold mt-2 leading-snug">
+                                          {source.title}
+                                        </h4>
+                                        <p className="text-xs text-neutral-400 mt-1">
+                                          {source.author} {source.year ? `(${source.year})` : ''}
+                                        </p>
+                                        {source.citation && (
+                                          <p className="text-[11px] font-mono text-neutral-500 mt-3 border-t border-neutral-900 pt-2 italic">
+                                            {source.citation}
+                                          </p>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {selectedAssetTab.startsWith('custom_') && (
+                                (() => {
+                                  const customId = selectedAssetTab.replace('custom_', '');
+                                  const section = selectedEpisode.study_modules?.custom_sections?.find(s => s.id === customId);
+                                  if (!section) return null;
+                                  const text = section.content[activeProfile] || section.content['academic_en'] || '';
+                                  return (
+                                    <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-neutral-800 bg-gradient-to-tr from-neutral-950 via-[#09090d] to-neutral-950">
+                                      <div className="flex items-center gap-3 border-b border-neutral-800 pb-4">
+                                        <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300">
+                                          <Award size={20} />
+                                        </div>
+                                        <div>
+                                          <h3 className="font-serif text-lg text-neutral-200">{section.label}</h3>
+                                          <p className="text-[10px] font-mono text-neutral-500 uppercase">Custom Dialogue Module</p>
+                                        </div>
+                                      </div>
+                                      <div className="font-sans text-sm md:text-base text-neutral-300 leading-relaxed whitespace-pre-line">
+                                        {text}
+                                      </div>
+                                    </div>
+                                  );
+                                })()
+                              )}
+                            </div>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
 
                 {/* Creator's Reflection Notes Panel */}
                 {selectedEpisode.study_modules.creator_reflection && (
