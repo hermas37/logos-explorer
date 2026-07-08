@@ -1112,7 +1112,40 @@ export default function App() {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* High Fidelity Dropdown Selector */}
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-mono text-neutral-400 uppercase font-bold tracking-wider">
+                      Study Dropdown Menu (EP 01 - EP 06):
+                    </label>
+                    <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg transition-all hover:border-indigo-500/30`}>
+                      <select
+                        onChange={(e) => {
+                          const found = episodes.find(ep => ep.id === e.target.value);
+                          if (found) setSelectedEpisode(found);
+                        }}
+                        defaultValue=""
+                        className={`w-full bg-transparent border-none text-xs md:text-sm font-serif font-bold focus:outline-none focus:ring-0 ${isBright ? 'text-neutral-900' : 'text-neutral-100'} cursor-pointer`}
+                      >
+                        <option value="" disabled className={isBright ? 'bg-white text-neutral-500' : 'bg-neutral-950 text-neutral-500'}>
+                          -- Select an Episode to Begin Study --
+                        </option>
+                        {episodes.map((episode) => {
+                          const title = episode.title[activeProfile] || episode.title['academic_en'];
+                          return (
+                            <option
+                              key={episode.id}
+                              value={episode.id}
+                              className={isBright ? 'bg-white text-neutral-900' : 'bg-neutral-950 text-neutral-200'}
+                            >
+                              EP {episode.id}: {title}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                     {episodes.map((episode) => {
                       const title = episode.title[activeProfile] || episode.title['academic_en'];
                       return (
@@ -1211,8 +1244,8 @@ export default function App() {
                 exit={{ opacity: 0, y: -15 }}
                 className="space-y-8"
               >
-                {/* Back button header */}
-                <div className="flex items-center justify-between">
+                {/* Back button header & Quick switcher */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-900/40 pb-4">
                   <button
                     onClick={() => setSelectedEpisode(null)}
                     id="back-to-hub-btn"
@@ -1221,8 +1254,43 @@ export default function App() {
                     <ArrowLeft size={14} />
                     Back to Episodes
                   </button>
-                  <div className="flex items-center gap-2 text-xs font-mono text-neutral-500">
-                    <span>Published: {selectedEpisode.publish_date}</span>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    {/* Quick switch dropdown selector */}
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider font-semibold">Switch Episode:</span>
+                      <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3 py-1.5 flex items-center shadow-md transition-all hover:border-indigo-500/30`}>
+                        <select
+                          value={selectedEpisode.id}
+                          onChange={(e) => {
+                            const found = episodes.find(ep => ep.id === e.target.value);
+                            if (found) {
+                              setSelectedEpisode(found);
+                              // Reset active options to show audio overview
+                              setSelectedAssetTab('audio_overview');
+                            }
+                          }}
+                          className={`bg-transparent border-none text-xs font-serif font-bold focus:outline-none focus:ring-0 ${isBright ? 'text-neutral-900' : 'text-neutral-100'} cursor-pointer`}
+                        >
+                          {episodes.map((episode) => {
+                            const title = episode.title[activeProfile] || episode.title['academic_en'];
+                            return (
+                              <option
+                                key={episode.id}
+                                value={episode.id}
+                                className={isBright ? 'bg-white text-neutral-900' : 'bg-neutral-950 text-neutral-200'}
+                              >
+                                EP {episode.id}: {title.substring(0, 40)}{title.length > 40 ? '...' : ''}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="text-xs font-mono text-neutral-500">
+                      <span>Published: {selectedEpisode.publish_date}</span>
+                    </div>
                   </div>
                 </div>
 

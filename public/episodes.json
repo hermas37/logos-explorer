@@ -781,5 +781,110 @@
         ]
       }
     }
+  },
+  {
+    "id": "02",
+    "title": {
+      "academic_en": "Episode 02: [Title to be provided later]",
+      "esl_en": "Episode 02: [Title to be provided later]",
+      "translated_es": "Episodio 02: [Título por determinar]",
+      "translated_id": "Episode 02: [Judul akan disediakan nanti]"
+    },
+    "description": {
+      "academic_en": "Academic studies, theological analysis, and interactive media assets for this module are currently being prepared. Check back soon for the full study companion suite.",
+      "esl_en": "The study guides, audio briefings, and slideshows for this video are currently in preparation.",
+      "translated_es": "Los análisis teológicos y materiales de estudio académico de este módulo se encuentran en preparación activa.",
+      "translated_id": "Materi studi akademis dan analisis teologis untuk modul ini sedang dipersiapkan."
+    },
+    "publish_date": "2026-07-10",
+    "youtube_video_id": "",
+    "scenes": [],
+    "study_modules": {
+      "custom_sections": []
+    }
+  },
+  {
+    "id": "03",
+    "title": {
+      "academic_en": "Episode 03: [Title to be provided later]",
+      "esl_en": "Episode 03: [Title to be provided later]",
+      "translated_es": "Episodio 03: [Título por determinar]",
+      "translated_id": "Episode 03: [Judul akan disediakan nanti]"
+    },
+    "description": {
+      "academic_en": "Academic studies, theological analysis, and interactive media assets for this module are currently being prepared. Check back soon for the full study companion suite.",
+      "esl_en": "The study guides, audio briefings, and slideshows for this video are currently in preparation.",
+      "translated_es": "Los análisis teológicos y materiales de estudio académico de este módulo se encuentran en preparación activa.",
+      "translated_id": "Materi studi akademis dan analisis teologis untuk modul ini sedang dipersiapkan."
+    },
+    "publish_date": "2026-07-15",
+    "youtube_video_id": "",
+    "scenes": [],
+    "study_modules": {
+      "custom_sections": []
+    }
+  },
+  {
+    "id": "04",
+    "title": {
+      "academic_en": "Episode 04: [Title to be provided later]",
+      "esl_en": "Episode 04: [Title to be provided later]",
+      "translated_es": "Episodio 04: [Título por determinar]",
+      "translated_id": "Episode 04: [Judul akan disediakan nanti]"
+    },
+    "description": {
+      "academic_en": "Academic studies, theological analysis, and interactive media assets for this module are currently being prepared. Check back soon for the full study companion suite.",
+      "esl_en": "The study guides, audio briefings, and slideshows for this video are currently in preparation.",
+      "translated_es": "Los análisis teológicos y materiales de estudio académico de este módulo se encuentran en preparación activa.",
+      "translated_id": "Materi studi akademis dan analisis teologis untuk modul ini sedang dipersiapkan."
+    },
+    "publish_date": "2026-07-20",
+    "youtube_video_id": "",
+    "scenes": [],
+    "study_modules": {
+      "custom_sections": []
+    }
+  },
+  {
+    "id": "05",
+    "title": {
+      "academic_en": "Episode 05: [Title to be provided later]",
+      "esl_en": "Episode 05: [Title to be provided later]",
+      "translated_es": "Episodio 05: [Título por determinar]",
+      "translated_id": "Episode 05: [Judul akan disediakan nanti]"
+    },
+    "description": {
+      "academic_en": "Academic studies, theological analysis, and interactive media assets for this module are currently being prepared. Check back soon for the full study companion suite.",
+      "esl_en": "The study guides, audio briefings, and slideshows for this video are currently in preparation.",
+      "translated_es": "Los análisis teológicos y materiales de estudio académico de este módulo se encuentran en preparación activa.",
+      "translated_id": "Materi studi akademis dan analisis teologis untuk modul ini sedang dipersiapkan."
+    },
+    "publish_date": "2026-07-25",
+    "youtube_video_id": "",
+    "scenes": [],
+    "study_modules": {
+      "custom_sections": []
+    }
+  },
+  {
+    "id": "06",
+    "title": {
+      "academic_en": "Episode 06: [Title to be provided later]",
+      "esl_en": "Episode 06: [Title to be provided later]",
+      "translated_es": "Episodio 06: [Título por determinar]",
+      "translated_id": "Episode 06: [Judul akan disediakan nanti]"
+    },
+    "description": {
+      "academic_en": "Academic studies, theological analysis, and interactive media assets for this module are currently being prepared. Check back soon for the full study companion suite.",
+      "esl_en": "The study guides, audio briefings, and slideshows for this video are currently in preparation.",
+      "translated_es": "Los análisis teológicos y materiales de estudio académico de este módulo se encuentran en preparación activa.",
+      "translated_id": "Materi studi akademis dan analisis teologis untuk modul ini sedang dipersiapkan."
+    },
+    "publish_date": "2026-07-30",
+    "youtube_video_id": "",
+    "scenes": [],
+    "study_modules": {
+      "custom_sections": []
+    }
   }
 ]
