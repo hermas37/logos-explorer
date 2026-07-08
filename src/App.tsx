@@ -773,7 +773,7 @@ export default function App() {
       {/* 2. Main Content Canvas */}
       <main className="flex-grow flex flex-col min-h-screen relative overflow-x-hidden pb-20 md:pb-6">
         
-        {/* Profile Selector at the Top Right header */}
+        {/* Language Selector at the Top Right header */}
         <header className={`border-b ${isBright ? 'border-neutral-200 bg-white/85' : 'border-neutral-900 bg-[#07070b]/60'} backdrop-blur-md sticky top-0 z-10 px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4`}>
           <div className="flex items-center gap-3 justify-between w-full sm:w-auto">
             <div className="flex items-center gap-2">
@@ -800,7 +800,7 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
             {/* Profile Dropdown for Mobile */}
             <div className={`sm:hidden flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1.5 rounded-xl self-stretch w-full`}>
-              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase pl-1.5 font-bold select-none whitespace-nowrap`}>Study Profile:</span>
+              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase pl-1.5 font-bold select-none whitespace-nowrap`}>Language Selector:</span>
               <select
                 value={activeProfile}
                 onChange={(e) => setActiveProfile(e.target.value as StudyProfile)}
@@ -822,7 +822,7 @@ export default function App() {
 
             {/* Profile pill group for Desktop */}
             <div className={`hidden sm:flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
-              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase px-2 font-bold select-none whitespace-nowrap`}>Study Profile:</span>
+              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase px-2 font-bold select-none whitespace-nowrap`}>Language Selector:</span>
               {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
                 <button
                   key={profile}

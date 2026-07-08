@@ -92,13 +92,13 @@ export default function OnboardingModal({
       )
     },
     {
-      title: "Tailored Study Profiles",
+      title: "Tailored Language Options",
       subtitle: "Four custom perspectives for different learning styles",
       icon: <Languages className="w-12 h-12 text-indigo-400" />,
       content: (
         <div className="space-y-4">
           <p className={`text-sm leading-relaxed ${isBright ? 'text-neutral-600' : 'text-neutral-300'}`}>
-            Every episode contains content fully customized across four separate demographics. Select a profile to adjust all vocabularies, slide decks, summaries, and analyses instantly:
+            Every episode contains content fully customized across four separate demographics. Select a language to adjust all vocabularies, slide decks, summaries, and analyses instantly:
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

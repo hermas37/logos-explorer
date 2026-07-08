@@ -1039,7 +1039,7 @@ export default function AdminDashboard({
                           <h4 className="font-serif text-sm font-semibold text-neutral-200">NotebookLM Short Video Overview</h4>
                         </div>
                         <p className="text-[10px] text-neutral-500 leading-relaxed font-mono">
-                          Specify URL coordinates for the short video overview (e.g., .mp4 hosted on Vercel Blob) and optionally define titles/descriptions for each study profile.
+                          Specify URL coordinates for the short video overview (e.g., .mp4 hosted on Vercel Blob) and optionally define titles/descriptions for each language profile.
                         </p>
 
                         <div className="space-y-4">

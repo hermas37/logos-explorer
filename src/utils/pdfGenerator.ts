@@ -417,7 +417,7 @@ export function generatePrintableHTML(
       <!-- Metadata Box -->
       <div class="meta-grid">
         <div class="meta-item">
-          <span class="meta-label">Selected Study Profile</span>
+          <span class="meta-label">Selected Language</span>
           <span class="meta-value">${profileNames[profile]}</span>
         </div>
         <div class="meta-item">
