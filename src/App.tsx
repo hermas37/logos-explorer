@@ -514,7 +514,9 @@ export default function App() {
     { id: 'infographic', label: 'Infographic' },
     { id: 'slide_deck', label: 'Slide Deck' },
     { id: 'reports', label: 'Reports' },
-    { id: 'quizzes', label: 'Quizzes' }
+    { id: 'quizzes', label: 'Quizzes' },
+    { id: 'quotes', label: 'Inspiring Quotation' },
+    { id: 'reflection', label: 'Reflection' }
   ];
 
   const hasDataForOption = (id: string) => {
@@ -536,6 +538,10 @@ export default function App() {
         return !!selectedEpisode.study_modules?.specialized_reports;
       case 'quizzes':
         return false;
+      case 'quotes':
+        return !!selectedEpisode.inspiring_quotations && selectedEpisode.inspiring_quotations.length > 0;
+      case 'reflection':
+        return !!selectedEpisode.study_modules?.creator_reflection;
       default:
         return false;
     }
@@ -589,6 +595,10 @@ export default function App() {
         return <BookOpenCheck size={13} className={tColors.iconColor} />;
       case 'quizzes':
         return <Award size={13} className={tColors.iconColor} />;
+      case 'quotes':
+        return <Quote size={13} className={tColors.iconColor} />;
+      case 'reflection':
+        return <MessageSquare size={13} className={tColors.iconColor} />;
       default:
         return <Sparkles size={13} className={tColors.iconColor} />;
     }
@@ -1483,6 +1493,37 @@ export default function App() {
                         {/* 6. QUIZZES */}
                         {selectedAssetTab === 'quizzes' && (
                           renderInProgressCard('Quizzes')
+                        )}
+
+                        {/* 7. INSPIRING QUOTATIONS */}
+                        {selectedAssetTab === 'quotes' && (
+                          hasDataForOption('quotes') ? (
+                            <Quotations 
+                              quotations={selectedEpisode.inspiring_quotations!} 
+                              activeProfile={activeProfile} 
+                            />
+                          ) : (
+                            renderInProgressCard('Inspiring Quotation')
+                          )
+                        )}
+
+                        {/* 8. CREATOR REFLECTION */}
+                        {selectedAssetTab === 'reflection' && (
+                          hasDataForOption('reflection') ? (
+                            <div className="space-y-6 max-w-4xl mx-auto p-4 md:p-8 rounded-2xl border border-dashed border-indigo-900/40 bg-gradient-to-tr from-neutral-950 via-[#0c0c12]/60 to-neutral-950">
+                              <div className="flex items-center gap-2 mb-3 border-b border-indigo-900/20 pb-4">
+                                <MessageSquare size={20} className="text-indigo-400" />
+                                <h4 className="font-serif text-lg text-indigo-200 font-bold">
+                                  Logos-Transmission Creator Reflection
+                                </h4>
+                              </div>
+                              <p className="font-serif text-sm md:text-base text-neutral-300 italic leading-relaxed pl-4 border-l border-indigo-900/50">
+                                "{selectedEpisode.study_modules.creator_reflection![activeProfile] || selectedEpisode.study_modules.creator_reflection!['academic_en']}"
+                              </p>
+                            </div>
+                          ) : (
+                            renderInProgressCard('Reflection')
+                          )
                         )}
                       </motion.div>
                     </AnimatePresence>
