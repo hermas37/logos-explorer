@@ -1026,80 +1026,153 @@ export default function App() {
             )}
             
             {/* ABOUT TAB VIEW */}
-            {activeTab === 'about' && (
-              <motion.div
-                key="about-tab"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="space-y-8"
-              >
-                <div className="glass-card p-8 rounded-2xl relative overflow-hidden">
-                  <div className="absolute right-0 top-0 w-80 h-80 bg-indigo-600/5 rounded-full blur-3xl pointer-events-none" />
-                  
-                  <div className="max-w-3xl space-y-6">
-                    <span className="text-xs font-mono uppercase tracking-widest text-indigo-400 font-bold bg-indigo-950/40 border border-indigo-900/50 px-2 py-0.5 rounded">
-                      App Manifest & Ethos
-                    </span>
-                    <h2 className="font-serif text-2xl md:text-3xl text-neutral-100 font-bold tracking-tight">
-                      Harmony of Creation, Science & Theology
-                    </h2>
-                    <p className="font-sans text-sm md:text-base text-neutral-400 leading-relaxed">
+            {activeTab === 'about' && (() => {
+              const aboutTranslations = {
+                academic_en: {
+                  manifest: "App Manifest & Ethos",
+                  title: "Harmony of Creation, Science & Theology",
+                  desc: (
+                    <>
                       <strong>Logos-Explorer</strong> is the definitive open-source study repository tailored for students, academics, and theologians following the <em>Logos-Transmission</em> dialogues. Our work is dedicated to showing how cutting-edge astrophysics, molecular biology, and quantum parameters are not in conflict with historical theology—but rather reveal the magnificent, rational mind of the divine Creator.
-                    </p>
-                  </div>
-                </div>
+                    </>
+                  ),
+                  offlineTitle: "Offline-First PWA Technology",
+                  offlineDesc: "This application incorporates a PWA Cache service worker. Once you open an episode, all of its accompanying study slides, specialized reports, and data parameters are stored directly on your phone or laptop. Study anywhere—even in remote retreats with zero internet connectivity.",
+                  offlineBadge: "Installed & Offline Ready"
+                },
+                esl_en: {
+                  manifest: "App Guide & Main Ideas",
+                  title: "How Science, Theology, and Creation Work Together",
+                  desc: (
+                    <>
+                      <strong>Logos-Explorer</strong> is a helpful study website for everyone reading or watching the <em>Logos-Transmission</em> videos. We show that modern science—like stars, biology, and chemistry—is not against God. Instead, science helps us see the beautiful and smart plan of our Creator.
+                    </>
+                  ),
+                  offlineTitle: "Works Without Internet (Offline)",
+                  offlineDesc: "This website saves everything directly to your phone or computer. Once you open a lesson, you can read the slides, summaries, and reports even when you have no internet. You can study anywhere at any time.",
+                  offlineBadge: "Saved & Ready Offline"
+                },
+                translated_es: {
+                  manifest: "Manifiesto de la Aplicación y Filosofía",
+                  title: "Armonía de la Creación, Ciencia y Teología",
+                  desc: (
+                    <>
+                      <strong>Logos-Explorer</strong> es el repositorio de estudio definitivo de código abierto adaptado para estudiantes, académicos y teólogos que siguen los diálogos de <em>Logos-Transmission</em>. Nuestro trabajo se dedica a demostrar que la astrofísica de vanguardia, la biología molecular y los parámetros cuánticos no están en conflicto con la teología histórica, sino que revelan la mente magnífica y racional del Creador divino.
+                    </>
+                  ),
+                  offlineTitle: "Tecnología PWA sin Conexión Primero",
+                  offlineDesc: "Esta aplicación incorpora un servicio de almacenamiento en caché PWA. Una vez que abres un episodio, todas las diapositivas de estudio, informes especializados y parámetros de datos que lo acompañan se guardan directamente en tu teléfono o computadora portátil. Estudia en cualquier lugar, incluso en retiros remotos sin conexión a internet.",
+                  offlineBadge: "Instalado y Listo sin Conexión"
+                },
+                translated_id: {
+                  manifest: "Manifes & Etos Aplikasi",
+                  title: "Harmonisasi Ciptaan, Sains & Teologi",
+                  desc: (
+                    <>
+                      <strong>Logos-Explorer</strong> adalah pusat studi sumber terbuka (open-source) yang dirancang khusus untuk siswa, akademisi, dan teolog yang mengikuti dialog <em>Logos-Transmission</em>. Karya kami didedikasikan untuk menunjukkan bahwa astrofisika mutakhir, biologi molekuler, dan parameter kuantum tidak bertentangan dengan teologi sejarah—melainkan justru mengungkap pikiran agung dan rasional dari Sang Pencipta ilahi.
+                    </>
+                  ),
+                  offlineTitle: "Teknologi PWA Berbasis Offline-First",
+                  offlineDesc: "Aplikasi ini menggunakan teknologi cache PWA yang canggih. Setelah Anda membuka suatu episode, semua slide studi, laporan khusus, dan parameter data akan disimpan langsung di ponsel atau laptop Anda. Belajar di mana saja—bahkan di tempat yang tidak ada sinyal internet sama sekali.",
+                  offlineBadge: "Tersimpan & Siap Offline"
+                }
+              };
 
-                {/* Grid describing study profiles */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="glass-card p-6 rounded-xl space-y-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
-                      <Cpu size={16} />
+              const t = aboutTranslations[activeProfile] || aboutTranslations['academic_en'];
+
+              return (
+                <motion.div
+                  key="about-tab"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  className="space-y-8"
+                >
+                  <div className="glass-card p-8 rounded-2xl relative overflow-hidden">
+                    <div className="absolute right-0 top-0 w-80 h-80 bg-indigo-600/5 rounded-full blur-3xl pointer-events-none" />
+                    
+                    <div className="max-w-3xl space-y-6">
+                      <span className="text-xs font-mono uppercase tracking-widest text-indigo-400 font-bold bg-indigo-950/40 border border-indigo-900/50 px-2 py-0.5 rounded">
+                        {t.manifest}
+                      </span>
+                      <h2 className="font-serif text-2xl md:text-3xl text-neutral-100 font-bold tracking-tight">
+                        {t.title}
+                      </h2>
+                      <p className="font-sans text-sm md:text-base text-neutral-400 leading-relaxed">
+                        {t.desc}
+                      </p>
                     </div>
-                    <h4 className="font-serif text-base text-neutral-200">Academic (EN)</h4>
-                    <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                      Includes advanced scientific metrics, Roger Penrose's phase volume parameters, and cosmological constants fine-tuning equations mapped to historical philosophical contexts.
-                    </p>
                   </div>
 
-                  <div className="glass-card p-6 rounded-xl space-y-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-950/30 flex items-center justify-center text-emerald-400 border border-emerald-900/40">
-                      <Languages size={16} />
+                  {/* Grid describing study profiles */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="glass-card p-6 rounded-xl space-y-3">
+                      <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
+                        <Cpu size={16} />
+                      </div>
+                      <h4 className="font-serif text-base text-neutral-200">Academic (EN)</h4>
+                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
+                        {activeProfile === 'translated_id' 
+                          ? 'Menyediakan metrik sains mendalam, parameter volume fase Roger Penrose, dan persamaan kosmologi presisi tinggi.'
+                          : "Includes advanced scientific metrics, Roger Penrose's phase volume parameters, and cosmological constants fine-tuning equations mapped to historical philosophical contexts."}
+                      </p>
                     </div>
-                    <h4 className="font-serif text-base text-neutral-200">Simplified (EN)</h4>
-                    <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                      Written with clear, simplified vocabulary, short paragraphs, and supportive definitions designed for English as a Second Language learners and general study reviews.
-                    </p>
-                  </div>
 
-                  <div className="glass-card p-6 rounded-xl space-y-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
-                      <Globe size={16} />
+                    <div className="glass-card p-6 rounded-xl space-y-3">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-950/30 flex items-center justify-center text-emerald-400 border border-emerald-900/40">
+                        <Languages size={16} />
+                      </div>
+                      <h4 className="font-serif text-base text-neutral-200">Simplified (EN)</h4>
+                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
+                        {activeProfile === 'translated_id'
+                          ? 'Ditulis dengan tata bahasa yang sederhana, paragraf pendek, dan penjelasan kosakata pendukung untuk pembelajaran umum.'
+                          : 'Written with clear, simplified vocabulary, short paragraphs, and supportive definitions designed for English as a Second Language learners and general study reviews.'}
+                      </p>
                     </div>
-                    <h4 className="font-serif text-base text-neutral-200">Español (ES)</h4>
-                    <p className="font-sans text-xs text-neutral-400 leading-relaxed">
-                      Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica de los episodios originales.
-                    </p>
-                  </div>
-                </div>
 
-                {/* offline capability module */}
-                <div className={`glass-card p-6 rounded-xl border ${tColors.accentBorder} bg-gradient-to-r ${tColors.selectTabBg} to-neutral-950 flex flex-col md:flex-row items-center justify-between gap-6`}>
-                  <div className="space-y-2">
-                    <h4 className="font-serif text-base text-neutral-200 flex items-center gap-2">
-                      <BookOpenCheck size={16} className={`${tColors.accentText} animate-pulse`} />
-                      Offline-First PWA Technology
-                    </h4>
-                    <p className="font-sans text-xs text-neutral-400 max-w-2xl leading-relaxed">
-                      This application incorporates a PWA Cache service worker. Once you open an episode, all of its accompanying study slides, specialized reports, and data parameters are stored directly on your phone or laptop. Study anywhere—even in remote retreats with zero internet connectivity.
-                    </p>
+                    <div className="glass-card p-6 rounded-xl space-y-3">
+                      <div className="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400 border border-indigo-900/40">
+                        <Globe size={16} />
+                      </div>
+                      <h4 className="font-serif text-base text-neutral-200">Español (ES)</h4>
+                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
+                        {activeProfile === 'translated_id'
+                          ? 'Terjemahan bahasa Spanyol yang lengkap untuk komunitas Hispanik, mempertahankan kedalaman teologi sains yang akurat.'
+                          : 'Una traducción rigurosa e integrada para toda la comunidad de habla hispana, preservando la profundidad teológica y la precisión científica.'}
+                      </p>
+                    </div>
+
+                    <div className="glass-card p-6 rounded-xl space-y-3">
+                      <div className="w-8 h-8 rounded-lg bg-amber-950/40 flex items-center justify-center text-amber-400 border border-amber-900/40">
+                        <Globe size={16} />
+                      </div>
+                      <h4 className="font-serif text-base text-neutral-200">Indonesia (ID)</h4>
+                      <p className="font-sans text-xs text-neutral-400 leading-relaxed">
+                        {activeProfile === 'translated_id'
+                          ? 'Terjemahan lengkap dan penyesuaian teologis dalam Bahasa Indonesia yang sederhana, jelas, dan sangat mudah dipahami.'
+                          : 'A beautiful translation and localized theological alignments in simple, clear Bahasa Indonesia for everyday learning.'}
+                      </p>
+                    </div>
                   </div>
-                  <div className={`text-xs font-mono ${tColors.accentText} border ${tColors.badgeBorder} px-3 py-1.5 rounded-lg ${tColors.badgeBg} whitespace-nowrap`}>
-                    Installed & Offline Ready
+
+                  {/* offline capability module */}
+                  <div className={`glass-card p-6 rounded-xl border ${tColors.accentBorder} bg-gradient-to-r ${tColors.selectTabBg} to-neutral-950 flex flex-col md:flex-row items-center justify-between gap-6`}>
+                    <div className="space-y-2">
+                      <h4 className="font-serif text-base text-neutral-200 flex items-center gap-2">
+                        <BookOpenCheck size={16} className={`${tColors.accentText} animate-pulse`} />
+                        {t.offlineTitle}
+                      </h4>
+                      <p className="font-sans text-xs text-neutral-400 max-w-2xl leading-relaxed">
+                        {t.offlineDesc}
+                      </p>
+                    </div>
+                    <div className={`text-xs font-mono ${tColors.accentText} border ${tColors.badgeBorder} px-3 py-1.5 rounded-lg ${tColors.badgeBg} whitespace-nowrap`}>
+                      {t.offlineBadge}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                </motion.div>
+              );
+            })()}
 
             {/* EPISODES HUB HOMEVIEW */}
             {activeTab === 'hub' && !selectedEpisode && (
