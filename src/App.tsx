@@ -921,7 +921,7 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
             {/* Profile Dropdown for Mobile */}
             <div className={`sm:hidden flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1.5 rounded-xl self-stretch w-full`}>
-              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase pl-1.5 font-bold select-none whitespace-nowrap`}>Language Selector:</span>
+              <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase pl-1.5 font-bold select-none whitespace-nowrap tracking-wider`}>LANGUAGE SELECTOR:</span>
               <select
                 value={activeProfile}
                 onChange={(e) => setActiveProfile(e.target.value as StudyProfile)}
@@ -943,7 +943,7 @@ export default function App() {
 
             {/* Profile pill group for Desktop */}
             <div className={`hidden sm:flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
-              <span className={`text-[10px] font-mono ${isBright ? 'text-neutral-500' : 'text-neutral-500'} uppercase px-2 font-bold select-none whitespace-nowrap`}>Language Selector:</span>
+              <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase px-2 font-bold select-none whitespace-nowrap tracking-wider`}>LANGUAGE SELECTOR:</span>
               {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
                 <button
                   key={profile}
@@ -1114,8 +1114,8 @@ export default function App() {
 
                   {/* High Fidelity Dropdown Selector */}
                   <div className="space-y-1.5">
-                    <label className="block text-[10px] font-mono text-neutral-400 uppercase font-bold tracking-wider">
-                      Study Dropdown Menu (EP 01 - EP 06):
+                    <label className="block text-sm font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider">
+                      STUDY SELECTOR:
                     </label>
                     <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg transition-all hover:border-indigo-500/30`}>
                       <select
@@ -1311,7 +1311,7 @@ export default function App() {
                     
                     {/* Mobile Friendly Dropdown Selector */}
                     <div className="block md:hidden w-full">
-                      <label className="block text-xs font-mono text-neutral-400 uppercase mb-2 font-bold tracking-wider">STUDY SELECTOR:</label>
+                      <label className="block text-sm font-mono text-amber-500 dark:text-amber-400 uppercase mb-2 font-extrabold tracking-wider">STUDY SELECTOR:</label>
                       <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg`}>
                         <select
                           value={selectedAssetTab}
@@ -1332,31 +1332,34 @@ export default function App() {
                     </div>
 
                     {/* Desktop Sequential Tab Picker */}
-                    <div className="hidden md:flex items-center overflow-x-auto custom-scrollbar gap-1 pb-px flex-grow max-w-full">
-                      {notebookLMOptions.map((opt) => {
-                        const isActive = selectedAssetTab === opt.id;
-                        const hasData = hasDataForOption(opt.id);
-                        return (
-                          <button
-                            key={opt.id}
-                            id={`asset-tab-${opt.id}`}
-                            onClick={() => setSelectedAssetTab(opt.id)}
-                            className={`px-3.5 py-3 rounded-t-xl text-xs font-medium whitespace-nowrap transition-all border-b-2 -mb-[9px] flex items-center gap-1.5 ${
-                              isActive
-                                ? `${tColors.selectActiveBorder} ${tColors.accentText} ${tColors.selectTabBg} font-semibold`
-                                : 'border-transparent text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/20'
-                            }`}
-                          >
-                            {getOptionIcon(opt.id)}
-                            <span>{opt.label}</span>
-                            {!hasData && (
-                              <span className="text-[9px] font-mono bg-neutral-900 border border-neutral-800 text-neutral-500 px-1.5 py-0.2 rounded font-bold uppercase scale-90">
-                                In Progress
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
+                    <div className="hidden md:flex items-center gap-4 flex-grow overflow-x-auto custom-scrollbar">
+                      <span className="text-sm font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider whitespace-nowrap">STUDY SELECTOR:</span>
+                      <div className="flex items-center gap-1 pb-px flex-grow max-w-full">
+                        {notebookLMOptions.map((opt) => {
+                          const isActive = selectedAssetTab === opt.id;
+                          const hasData = hasDataForOption(opt.id);
+                          return (
+                            <button
+                              key={opt.id}
+                              id={`asset-tab-${opt.id}`}
+                              onClick={() => setSelectedAssetTab(opt.id)}
+                              className={`px-3.5 py-3 rounded-t-xl text-xs font-medium whitespace-nowrap transition-all border-b-2 -mb-[9px] flex items-center gap-1.5 ${
+                                isActive
+                                  ? `${tColors.selectActiveBorder} ${tColors.accentText} ${tColors.selectTabBg} font-semibold`
+                                  : 'border-transparent text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/20'
+                              }`}
+                            >
+                              {getOptionIcon(opt.id)}
+                              <span>{opt.label}</span>
+                              {!hasData && (
+                                <span className="text-[9px] font-mono bg-neutral-900 border border-neutral-800 text-neutral-500 px-1.5 py-0.2 rounded font-bold uppercase scale-90">
+                                  In Progress
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* Complete Study Companion Trigger */}
