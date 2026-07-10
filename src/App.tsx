@@ -31,7 +31,8 @@ import {
   Printer,
   Video,
   Clock,
-  Construction
+  Construction,
+  Github
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -519,6 +520,17 @@ export default function App() {
     { id: 'reflection', label: 'Reflection' }
   ];
 
+  const getGitHubAssetUrl = (
+    episode: Episode | null,
+    assetKey: 'reports' | 'quizzes' | 'slide_decks' | 'infographics',
+    profile: StudyProfile
+  ): string | undefined => {
+    if (!episode) return undefined;
+    const profileOverride = episode.study_modules?.github_assets?.[`${assetKey}_by_profile` as const]?.[profile];
+    if (profileOverride) return profileOverride;
+    return episode.study_modules?.github_assets?.[assetKey];
+  };
+
   const hasDataForOption = (id: string) => {
     if (!selectedEpisode) return false;
     switch (id) {
@@ -531,13 +543,13 @@ export default function App() {
       case 'video_overview_short':
         return !!selectedEpisode.short_video_overview && !!selectedEpisode.short_video_overview.video_url;
       case 'infographic':
-        return !!selectedEpisode.study_modules?.infographic;
+        return !!selectedEpisode.study_modules?.infographic || !!getGitHubAssetUrl(selectedEpisode, 'infographics', activeProfile);
       case 'slide_deck':
-        return !!selectedEpisode.study_modules?.slide_decks && selectedEpisode.study_modules.slide_decks.length > 0;
+        return (!!selectedEpisode.study_modules?.slide_decks && selectedEpisode.study_modules.slide_decks.length > 0) || !!getGitHubAssetUrl(selectedEpisode, 'slide_decks', activeProfile);
       case 'reports':
-        return !!selectedEpisode.study_modules?.specialized_reports;
+        return !!selectedEpisode.study_modules?.specialized_reports || !!getGitHubAssetUrl(selectedEpisode, 'reports', activeProfile);
       case 'quizzes':
-        return false;
+        return !!getGitHubAssetUrl(selectedEpisode, 'quizzes', activeProfile);
       case 'quotes':
         return !!selectedEpisode.inspiring_quotations && selectedEpisode.inspiring_quotations.length > 0;
       case 'reflection':
@@ -633,6 +645,65 @@ export default function App() {
             <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider font-semibold">
               Synthesis Pending
             </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderGitHubAssetBanner = (assetKey: 'reports' | 'quizzes' | 'slide_decks' | 'infographics') => {
+    const url = getGitHubAssetUrl(selectedEpisode, assetKey, activeProfile);
+    if (!url) return null;
+    return (
+      <div className="mb-4 flex items-center justify-between p-3.5 rounded-xl border border-indigo-950/60 bg-indigo-950/15 text-xs">
+        <div className="flex items-center gap-2 text-neutral-400 font-sans">
+          <Github size={14} className="text-indigo-400 shrink-0" />
+          <span className="truncate">This study module is synchronized with our GitHub repository.</span>
+        </div>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-3 py-1 bg-indigo-950 hover:bg-indigo-900 border border-indigo-900/40 hover:border-indigo-500/30 text-xs text-indigo-300 font-medium rounded-lg transition-all"
+        >
+          <span>Open on GitHub</span>
+          <ExternalLink size={10} />
+        </a>
+      </div>
+    );
+  };
+
+  const renderGitHubAssetCard = (label: string, assetKey: 'reports' | 'quizzes' | 'slide_decks' | 'infographics') => {
+    const url = getGitHubAssetUrl(selectedEpisode, assetKey, activeProfile);
+    if (!url) return null;
+    return (
+      <div className="flex flex-col items-center justify-center text-center p-12 rounded-2xl border border-indigo-900/30 bg-gradient-to-tr from-[#060609] via-indigo-950/10 to-neutral-950 shadow-2xl relative overflow-hidden group">
+        {/* Decorative pulse glow */}
+        <div className="absolute -inset-px bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-emerald-500/5 opacity-60 blur-xl group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+        
+        <div className="relative space-y-5 max-w-md z-10">
+          <div className="w-14 h-14 rounded-full bg-indigo-950/40 border border-indigo-900/50 flex items-center justify-center text-indigo-400 mx-auto">
+            <Github size={24} className="text-indigo-400 animate-pulse" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="font-serif text-lg text-neutral-100 font-bold tracking-tight">
+              {label} Hosted on GitHub
+            </h3>
+            <p className="font-sans text-xs text-neutral-400 leading-relaxed">
+              This module's content is managed directly via our Git-based curation flow and is available as an interactive asset in the repository.
+            </p>
+          </div>
+          
+          <div className="pt-2">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-medium text-xs rounded-xl shadow-lg shadow-indigo-600/15 transition-all duration-200"
+            >
+              <span>View {label} on GitHub</span>
+              <ExternalLink size={12} />
+            </a>
           </div>
         </div>
       </div>
@@ -1553,10 +1624,17 @@ export default function App() {
                         {/* 3. INFOGRAPHIC */}
                         {selectedAssetTab === 'infographic' && (
                           hasDataForOption('infographic') ? (
-                            <Infographic 
-                              infographicData={selectedEpisode.study_modules.infographic!} 
-                              activeProfile={activeProfile} 
-                            />
+                            <div className="space-y-4">
+                              {renderGitHubAssetBanner('infographics')}
+                              {selectedEpisode.study_modules.infographic ? (
+                                <Infographic 
+                                  infographicData={selectedEpisode.study_modules.infographic!} 
+                                  activeProfile={activeProfile} 
+                                />
+                              ) : (
+                                renderGitHubAssetCard('Infographics', 'infographics')
+                              )}
+                            </div>
                           ) : (
                             renderInProgressCard('Infographic')
                           )
@@ -1565,10 +1643,17 @@ export default function App() {
                         {/* 4. SLIDE DECK */}
                         {selectedAssetTab === 'slide_deck' && (
                           hasDataForOption('slide_deck') ? (
-                            <SlideDeckComponent 
-                              slideDecks={selectedEpisode.study_modules.slide_decks!} 
-                              activeProfile={activeProfile} 
-                            />
+                            <div className="space-y-4">
+                              {renderGitHubAssetBanner('slide_decks')}
+                              {selectedEpisode.study_modules.slide_decks && selectedEpisode.study_modules.slide_decks.length > 0 ? (
+                                <SlideDeckComponent 
+                                  slideDecks={selectedEpisode.study_modules.slide_decks!} 
+                                  activeProfile={activeProfile} 
+                                />
+                              ) : (
+                                renderGitHubAssetCard('Slide Decks', 'slide_decks')
+                              )}
+                            </div>
                           ) : (
                             renderInProgressCard('Slide Deck')
                           )
@@ -1577,10 +1662,17 @@ export default function App() {
                         {/* 5. REPORTS */}
                         {selectedAssetTab === 'reports' && (
                           hasDataForOption('reports') ? (
-                            <ReportPanel 
-                              reports={selectedEpisode.study_modules.specialized_reports!} 
-                              activeProfile={activeProfile} 
-                            />
+                            <div className="space-y-4">
+                              {renderGitHubAssetBanner('reports')}
+                              {selectedEpisode.study_modules.specialized_reports ? (
+                                <ReportPanel 
+                                  reports={selectedEpisode.study_modules.specialized_reports!} 
+                                  activeProfile={activeProfile} 
+                                />
+                              ) : (
+                                renderGitHubAssetCard('Specialized Reports', 'reports')
+                              )}
+                            </div>
                           ) : (
                             renderInProgressCard('Reports')
                           )
@@ -1588,7 +1680,11 @@ export default function App() {
 
                         {/* 6. QUIZZES */}
                         {selectedAssetTab === 'quizzes' && (
-                          renderInProgressCard('Quizzes')
+                          hasDataForOption('quizzes') ? (
+                            renderGitHubAssetCard('Interactive Quizzes', 'quizzes')
+                          ) : (
+                            renderInProgressCard('Quizzes')
+                          )
                         )}
 
                         {/* 7. INSPIRING QUOTATIONS */}

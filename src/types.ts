@@ -123,6 +123,37 @@ export interface CustomSection {
   content: ProfileMappedString;
 }
 
+export interface GitHubAssetLinks {
+  reports?: string;
+  reports_by_profile?: {
+    academic_en?: string;
+    esl_en?: string;
+    translated_es?: string;
+    translated_id?: string;
+  };
+  quizzes?: string;
+  quizzes_by_profile?: {
+    academic_en?: string;
+    esl_en?: string;
+    translated_es?: string;
+    translated_id?: string;
+  };
+  slide_decks?: string;
+  slide_decks_by_profile?: {
+    academic_en?: string;
+    esl_en?: string;
+    translated_es?: string;
+    translated_id?: string;
+  };
+  infographics?: string;
+  infographics_by_profile?: {
+    academic_en?: string;
+    esl_en?: string;
+    translated_es?: string;
+    translated_id?: string;
+  };
+}
+
 export interface StudyModules {
   mind_map: {
     academic_en: MindMapNode;
@@ -149,6 +180,7 @@ export interface StudyModules {
   executive_summary?: ExecutiveSummaryData;
   inspiring_story?: ProfileMappedString;
   custom_sections?: CustomSection[];
+  github_assets?: GitHubAssetLinks;
 }
 
 export interface Episode {
