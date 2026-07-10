@@ -40,9 +40,9 @@ interface AdminDashboardProps {
 
 const THEMES = [
   { id: 'cosmic', name: 'Cosmic Space', desc: 'Deep obsidian and indigo stardust palette' },
-  { id: 'emerald', name: 'Emerald Sanctuary', desc: 'Deep forest greens and mint, celebrating creation' },
+  { id: 'emerald', name: 'Emerald Sanctuary', desc: 'Deep forest greens and mint, celebrating creation (Default)' },
   { id: 'amber', name: 'Solar Amber', desc: 'Rich charcoal and sand with sunrise amber highlights' },
-  { id: 'vatican', name: 'Vatican Gold', desc: 'Royal dark navy and gold, evoking ancient archives (Default)' },
+  { id: 'vatican', name: 'Vatican Gold', desc: 'Royal dark navy and gold, evoking ancient archives' },
   { id: 'crimson', name: 'Royal Crimson', desc: 'Sacred burgundy and warm rose accents' }
 ];
 

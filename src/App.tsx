@@ -198,7 +198,7 @@ export default function App() {
   }, []);
 
   const [visualTheme, setVisualTheme] = useState(() => {
-    return localStorage.getItem('logos_visual_theme') || 'vatican';
+    return localStorage.getItem('logos_visual_theme') || 'emerald';
   });
 
   const [brightness, setBrightness] = useState<'dark' | 'bright'>(() => {

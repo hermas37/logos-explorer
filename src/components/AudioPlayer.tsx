@@ -130,12 +130,12 @@ export default function AudioPlayer({ podcastUrl, briefUrl, activeProfile }: Aud
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [speed, setSpeed] = useState(1);
-  const [themeName, setThemeName] = useState('vatican');
+  const [themeName, setThemeName] = useState('emerald');
   const [brightness, setBrightness] = useState<'dark' | 'bright'>('dark');
 
   useEffect(() => {
     const checkThemeAndBrightness = () => {
-      const storedTheme = localStorage.getItem('logos_visual_theme') || 'vatican';
+      const storedTheme = localStorage.getItem('logos_visual_theme') || 'emerald';
       if (storedTheme !== themeName) {
         setThemeName(storedTheme);
       }
