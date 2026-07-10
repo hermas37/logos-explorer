@@ -1004,7 +1004,7 @@ export default function App() {
             <div className="flex items-center gap-3 w-full sm:w-auto">
               {/* Profile Dropdown for Mobile */}
               <div className={`sm:hidden flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1.5 rounded-xl self-stretch w-full`}>
-                <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase pl-1.5 font-bold select-none whitespace-nowrap tracking-wider`}>1. LANGUAGE SELECTOR</span>
+                <span className="text-xs font-mono font-bold bg-amber-500 dark:bg-amber-600 text-white px-2.5 py-1 rounded-lg select-none whitespace-nowrap tracking-wider uppercase">1. LANGUAGE SELECTOR</span>
                 <select
                   value={activeProfile}
                   onChange={(e) => setActiveProfile(e.target.value as StudyProfile)}
@@ -1026,7 +1026,7 @@ export default function App() {
 
               {/* Profile pill group for Desktop */}
               <div className={`hidden sm:flex items-center gap-2 ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/80 border-neutral-800'} border p-1 rounded-xl self-stretch sm:self-auto overflow-x-auto custom-scrollbar`}>
-                <span className={`text-xs font-mono text-amber-500 dark:text-amber-400 uppercase px-2 font-bold select-none whitespace-nowrap tracking-wider`}>1. LANGUAGE SELECTOR</span>
+                <span className="text-xs font-mono font-bold bg-amber-500 dark:bg-amber-600 text-white px-2.5 py-1 rounded-lg select-none whitespace-nowrap tracking-wider uppercase">1. LANGUAGE SELECTOR</span>
                 {(['esl_en', 'academic_en', 'translated_es', 'translated_id'] as StudyProfile[]).map((profile) => (
                   <button
                     key={profile}
@@ -1319,10 +1319,12 @@ export default function App() {
                   </div>
 
                   {/* High Fidelity Dropdown Selector */}
-                  <div className="space-y-1.5">
-                    <label className="block text-sm font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider">
-                      2. EPISODE SELECTOR
-                    </label>
+                  <div className="space-y-2">
+                    <div className="flex">
+                      <label className="inline-block text-xs font-mono font-bold bg-amber-500 dark:bg-amber-600 text-white px-2.5 py-1 rounded-lg select-none whitespace-nowrap tracking-wider uppercase">
+                        2. EPISODE SELECTOR
+                      </label>
+                    </div>
                     <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg transition-all hover:border-indigo-500/30`}>
                       <select
                         onChange={(e) => {
@@ -1487,8 +1489,10 @@ export default function App() {
                   <div className="border-b border-neutral-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2">
                     
                     {/* Mobile Friendly Dropdown Selector */}
-                    <div className="block md:hidden w-full">
-                      <label className="block text-sm font-mono text-amber-500 dark:text-amber-400 uppercase mb-2 font-extrabold tracking-wider">3. STUDY SELECTOR</label>
+                    <div className="block md:hidden w-full space-y-2">
+                      <div className="flex">
+                        <label className="inline-block text-xs font-mono font-bold bg-amber-500 dark:bg-amber-600 text-white px-2.5 py-1 rounded-lg select-none whitespace-nowrap tracking-wider uppercase">3. STUDY SELECTOR</label>
+                      </div>
                       <div className={`relative ${isBright ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-950 border-neutral-800'} border rounded-xl px-3.5 py-2.5 flex items-center shadow-lg`}>
                         <select
                           value={selectedAssetTab}
@@ -1510,7 +1514,7 @@ export default function App() {
 
                     {/* Desktop Sequential Tab Picker */}
                     <div className="hidden md:flex items-center gap-4 flex-grow overflow-x-auto custom-scrollbar">
-                      <span className="text-sm font-mono text-amber-500 dark:text-amber-400 uppercase font-extrabold tracking-wider whitespace-nowrap">3. STUDY SELECTOR</span>
+                      <span className="text-xs font-mono font-bold bg-amber-500 dark:bg-amber-600 text-white px-2.5 py-1 rounded-lg select-none whitespace-nowrap tracking-wider uppercase">3. STUDY SELECTOR</span>
                       <div className="flex items-center gap-1 pb-px flex-grow max-w-full">
                         {notebookLMOptions.map((opt) => {
                           const isActive = selectedAssetTab === opt.id;
